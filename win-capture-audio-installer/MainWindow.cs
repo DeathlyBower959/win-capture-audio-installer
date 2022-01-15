@@ -1,0 +1,399 @@
+﻿using Guna.UI2.WinForms;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using win_capture_audio_installer.Classes;
+using win_capture_audio_installer.Information;
+using win_capture_audio_installer.ReleaseClasses;
+using WK.Libraries.BetterFolderBrowserNS;
+
+namespace win_capture_audio_installer
+{
+    public partial class MainWindow : Form
+    {
+
+        public Logger dLogger = new Logger(@"C:\temp\win-capture-audio-installer\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public static MainWindow INSTANCE;
+        public bool internet;
+
+        public Version minOBSVersion = new Version(27, 1, 3);
+        public int minWINVersion = 19041;
+
+        public MainWindow()
+        {
+            INSTANCE = this;
+
+            InitializeComponent();
+
+            ControlManager.Home();
+            DownloadRequiredFiles();
+        }
+
+        public void DownloadRequiredFiles()
+        {
+            Task.Run(async () =>
+            {
+                UpdateStatus("Getting latest plugin versions...", false);
+                await DownloadManager.DownloadAsync(
+               "https://github.com/DeathlyBower959/application-latest-releases/blob/main/release-versions/win-capture-audio-latest.json?raw=true",
+               @"C:\temp\win-capture-audio-installer\Data",
+               "latest.json");
+
+#if DEBUG
+                File.Copy("../../../Resources/FAQ.rtf", @"C:\temp\win-capture-audio-installer\Data\FAQ.rtf", true);
+                File.Copy("../../../Resources/required.txt", @"C:\temp\win-capture-audio-installer\Data\required.txt", true);
+#else
+                await DownloadManager.DownloadAsync(
+               "https://github.com/DeathlyBower959/win-capture-audio-installer/tree/master/win-capture-audio-installer/Resources/FAQ.rtf",
+               @"C:\temp\win-capture-audio-installer\Data",
+               "FAQ.rtf");
+
+                await DownloadManager.DownloadAsync(
+                "https://github.com/DeathlyBower959/win-capture-audio-installer/tree/master/win-capture-audio-installer/Resources/required.txt",
+                @"C:\temp\win-capture-audio-installer\Data",
+                "required.txt");
+#endif
+
+
+
+                if (File.Exists(@"C:\temp\win-capture-audio-installer\Data\required.txt"))
+                {
+                    string[] data = File.ReadAllLines(@"C:\temp\win-capture-audio-installer\Data\required.txt");
+                    minOBSVersion = new Version(data[0].Split(':')[1]);
+                    minWINVersion = int.Parse(data[1].Split(':')[1]);
+                    dLogger.Log($"Retrieved required versions for windows and OBS\nOBS: {minOBSVersion}\nWin: {minWINVersion}", LogLevel.Success);
+                }
+
+                if (!File.Exists(@"C:\temp\win-capture-audio-installer\Data\latest.json"))
+                {
+                    dLogger.Log("Failed to download latest releases!", LogLevel.Error);
+                    versionSelector.Invoke(new Action(() =>
+                    {
+                        versionSelector.Items.Clear();
+                    }));
+                    UpdateStatus("Failed to get latest plugin versions...");
+                    return;
+                }
+
+                versionSelector.Invoke(new Action(() =>
+                {
+                    versionSelector.Items.Clear();
+                    versionSelector.Items.Add("Loading...");
+                }));
+
+                Releases latestVersions;
+                try
+                {
+                    latestVersions = JsonConvert.DeserializeObject<Releases>(File.ReadAllText(@"C:\temp\win-capture-audio-installer\Data\latest.json"));
+                }
+                catch (Exception e)
+                {
+                    dLogger.Log("Failed to parse latest.json", LogLevel.Error);
+                    dLogger.Log(e);
+                    return;
+                }
+
+                if (latestVersions?.data == null)
+                {
+                    dLogger.Log("'data' array is not present in latest.json!", LogLevel.Error);
+                    return;
+                }
+
+                try
+                {
+                    foreach (Releases.Release release in latestVersions.data)
+                    {
+                        if (release?.assets != null && release?.tag_name != null)
+                        {
+                            foreach (Releases.Asset asset in release.assets)
+                            {
+                                if (asset?.name != null && asset?.browser_download_url != null)
+                                {
+                                    if (asset.name.Contains("win-capture-audio") && asset.name.EndsWith(".zip") || asset.name.EndsWith(".zip"))
+                                    {
+                                        try
+                                        {
+                                            // Make it so when it fails to download, then update status to show it
+                                            await DownloadManager.DownloadAsync(asset.browser_download_url, @"C:\temp\win-capture-audio-installer\Data\versions", release.tag_name + ".zip");
+
+                                            UpdateStatus($"Downloaded: {release.tag_name}");
+
+                                            dLogger.Log("Downloaded: " + release.tag_name, LogLevel.Success);
+                                            versionSelector.Invoke(new Action(() =>
+                                            {
+                                                if (versionSelector.Items.Contains("Loading...")) versionSelector.Items.Remove("Loading...");
+                                                versionSelector.Items.Add(release.tag_name);
+                                            }));
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            UpdateStatus($"Failed to download: {release.tag_name}");
+                                            dLogger.Log("Failed to download: " + release.tag_name, LogLevel.Error);
+                                            dLogger.Log(e);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    versionSelector.Invoke(new Action(() =>
+                    {
+                        versionSelector.SelectedIndex = 0;
+                    }));
+
+                    UpdateStatus("Finished Downloading Versions...");
+                }
+
+                catch (Exception e)
+                {
+                    UpdateStatus("Failed to download all versions...");
+
+                    dLogger.Log("Failed to download releases!", LogLevel.Error);
+                    dLogger.Log(e);
+                }
+
+
+            });
+        }
+
+
+        private void internetCheckTimer_Tick(object sender, EventArgs e)
+        {
+            InternetManager.ReCheckInternet();
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            closeApp("Closed Via Close Button");
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            closeApp("Closed: " + e.CloseReason);
+        }
+
+        private bool _isClosing = false;
+        private string confirmClose = string.Empty;
+        private void closeApp(string logText)
+        {
+            if (_isClosing) return;
+            Properties.Settings.Default.Save();
+            if (confirmClose == string.Empty)
+            {
+
+                _isClosing = true;
+
+                dLogger.Log(logText);
+
+                //Close all loggers
+                FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                foreach (FieldInfo fieldInfo in fis)
+                {
+                    if (fieldInfo.FieldType == typeof(Logger))
+                    {
+                        var logger = fieldInfo.GetValue(this) as Logger;
+                        logger.Disable();
+                    }
+                }
+
+                fadeOut.Start();
+            }
+            else
+            {
+                if (MessageBox.Show(confirmClose, "Are you sure you want to quit?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    _isClosing = true;
+
+                    dLogger.Log(logText);
+
+                    //Close all loggers
+                    FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                    foreach (FieldInfo fieldInfo in fis)
+                    {
+                        if (fieldInfo.FieldType == typeof(Logger))
+                        {
+                            var logger = fieldInfo.GetValue(this) as Logger;
+                            logger.Disable();
+                        }
+                    }
+
+                    fadeOut.Start();
+                }
+            }
+        }
+
+        private void minimizeButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void fadeOut_Tick(object sender, EventArgs e)
+        {
+            this.Opacity -= 0.04; //Fade in
+            if (this.Opacity <= 0)
+            {
+                fadeOut.Stop();
+                this.Close();
+            }
+        }
+
+        private void fadeIn_Tick(object sender, EventArgs e)
+        {
+            this.Opacity += 0.04; //Fade in
+            if (this.Opacity >= 1)
+            {
+                fadeIn.Stop();
+            }
+        }
+
+        private void homeButton_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab == homePage) return;
+
+            tabControl.SelectedTab = homePage;
+            ControlManager.Home();
+        }
+
+        private void faqButton_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab == faqPage) return;
+
+            tabControl.SelectedTab = faqPage;
+            ControlManager.FAQ();
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab == settingsPage) return;
+
+            tabControl.SelectedTab = settingsPage;
+            ControlManager.Settings();
+        }
+
+
+        CancellationTokenSource prevSource = new CancellationTokenSource();
+        public void UpdateStatus(string newStatus, bool autoClose = true)
+        {
+            if (prevSource != null) prevSource.Cancel();
+
+            CancellationTokenSource newSource = new CancellationTokenSource();
+            prevSource = newSource;
+
+            statusText.Invoke(new Action(() =>
+            {
+                statusText.Text = newStatus;
+            }));
+
+            if (autoClose)
+                ClearStatus(newSource.Token);
+        }
+
+        /// <summary>
+        /// RTL: Removes text from the right of the label to the left
+        /// DoubleEdge: Removes text from both sides of the label at the same time
+        /// Center: Removes the letter in the center of the text
+        /// </summary>
+        public enum StatusAnimationType
+        {
+            RTL,
+            DoubleEdge,
+            Center
+        }
+
+        public async void ClearStatus(CancellationToken cancelToken = default(CancellationToken))
+        {
+            int delay = 3000;
+            int textDelay = 35;
+            StatusAnimationType animationType = StatusAnimationType.DoubleEdge;
+
+            await Task.Delay(delay);
+            statusText.Invoke(new Action(async () =>
+            {
+                int length = 0;
+
+                if (animationType == StatusAnimationType.RTL)
+                    length = statusText.Text.Length;
+
+                else if (animationType == StatusAnimationType.DoubleEdge)
+                    length = Convert.ToInt32(Math.Floor(statusText.Text.Length / 2f));
+
+                else if (animationType == StatusAnimationType.Center)
+                    length = statusText.Text.Length;
+
+                for (int i = length; i > 0; i--)
+                {
+                    if (cancelToken != CancellationToken.None && cancelToken.IsCancellationRequested) return;
+
+                    if (animationType == StatusAnimationType.RTL)
+                        statusText.Text = statusText.Text.Remove(statusText.Text.Length - 1, 1);
+
+                    else if (animationType == StatusAnimationType.DoubleEdge)
+                        statusText.Text = statusText.Text.Remove(statusText.Text.Length - 1, 1).Remove(0, 1);
+
+                    else if (animationType == StatusAnimationType.Center)
+                        statusText.Text = statusText.Text.Remove((Convert.ToInt32(Math.Floor(statusText.Text.Length / 2f))), 1);
+
+                    await Task.Delay(textDelay);
+                }
+
+                statusText.Text = string.Empty;
+            }));
+        }
+
+        private void installButton_Click(object sender, EventArgs e)
+        {
+            bool obsCompat = OBS.IsCompatible();
+            bool winCompat = Windows.IsCompatible();
+
+            if (!obsCompat || !winCompat) return;
+
+            CaptureAudio.Install(versionSelector.GetItemText(versionSelector.SelectedItem));
+        }
+
+        private void obsInstallLocationSelector_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.OBSInstall == "auto")
+            {
+                BetterFolderBrowser obsLoc = new BetterFolderBrowser
+                {
+                    Title = "Choose your OBS install location!",
+                    RootFolder = @"C:\Program Files",
+                    Multiselect = false
+                };
+
+                if (obsLoc.ShowDialog() == DialogResult.OK)
+                {
+                    if (OBS.IsOBSFolder(obsLoc.SelectedFolder))
+                    {
+                        Properties.Settings.Default.OBSInstall = obsLoc.SelectedFolder;
+                        Notify.Toast("OBS Location", "Succesfully changed OBS install location to:\n" + obsLoc.SelectedFolder, 2);
+                    }
+                    else
+                    {
+                        Notify.Toast("OBS Location", "Failed to update OBS studio install location...", 2);
+                    }
+                }
+            }
+            else
+            {
+                Properties.Settings.Default.OBSInstall = "auto";
+                Notify.Toast("OBS Install", "The install location of OBS Studio as to been set to automatically detect!", 2);
+            }
+
+            ((Guna2Button)sender).Checked = Properties.Settings.Default.OBSInstall == "auto" ? false : true;
+
+
+        }
+
+        private void versionSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (versionSelector.GetItemText(versionSelector.SelectedItem) == "Loading...") versionSelector.SelectedIndex = -1;
+        }
+    }
+}

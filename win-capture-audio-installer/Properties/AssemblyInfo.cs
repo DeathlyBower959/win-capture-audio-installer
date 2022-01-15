@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("win-capture-audio-installer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The installer for win-capture-audio plugin by bozbez!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
 [assembly: AssemblyProduct("win-capture-audio-installer")]

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace win_capture_audio_installer
@@ -11,12 +9,25 @@ namespace win_capture_audio_installer
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+
+        static bool result;
+        static Mutex mutex = new Mutex(true, "win-capture-audio-installer.DeathlyBower959", out result);
+
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            if (!result) return;
+
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainWindow());
+            }
+            finally
+            {
+                mutex.ReleaseMutex();
+            }
         }
     }
 }
