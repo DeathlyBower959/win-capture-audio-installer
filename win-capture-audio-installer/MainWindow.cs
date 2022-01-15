@@ -48,12 +48,12 @@ namespace win_capture_audio_installer
                 File.Copy("../../../Resources/required.txt", @"C:\temp\win-capture-audio-installer\Data\required.txt", true);
 #else
                 await DownloadManager.DownloadAsync(
-               "https://github.com/DeathlyBower959/win-capture-audio-installer/tree/master/win-capture-audio-installer/Resources/FAQ.rtf",
+               "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/FAQ.rtf",
                @"C:\temp\win-capture-audio-installer\Data",
                "FAQ.rtf");
 
                 await DownloadManager.DownloadAsync(
-                "https://github.com/DeathlyBower959/win-capture-audio-installer/tree/master/win-capture-audio-installer/Resources/required.txt",
+                "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/required.txt",
                 @"C:\temp\win-capture-audio-installer\Data",
                 "required.txt");
 #endif

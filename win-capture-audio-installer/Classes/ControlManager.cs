@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using win_capture_audio_installer.Information;
 
 namespace win_capture_audio_installer.Classes
@@ -16,17 +14,11 @@ namespace win_capture_audio_installer.Classes
 
             bool isOBSFolder = OBS.IsOBSFolder(Properties.Settings.Default.OBSInstall);
 
-                MAIN.obsInstallLocationSelector.Checked = isOBSFolder;
+            MAIN.obsInstallLocationSelector.Checked = isOBSFolder;
 
             if (!isOBSFolder) Properties.Settings.Default.OBSInstall = "auto";
 
-
-
-        }
-
-        public static void UpdateVersionList()
-        {
-            List<string> versions = CaptureAudio.GetDownloadedVersions();
+            /*List<string> versions = CaptureAudio.GetDownloadedVersions();
             versions.Reverse();
             MAIN.versionSelector.Invoke(new Action(() =>
             {
@@ -40,8 +32,9 @@ namespace win_capture_audio_installer.Classes
                 }
 
                 MAIN.versionSelector.SelectedIndex = 0;
-            }));
+            }));*/
         }
+
         public static void FAQ()
         {
             if (File.Exists(@"C:\temp\win-capture-audio-installer\Data\FAQ.rtf"))

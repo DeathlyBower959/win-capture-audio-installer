@@ -116,7 +116,8 @@ namespace win_capture_audio_installer.Classes
                 string wincapversion = File.ReadAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"));
                 MAIN.dLogger.Log("Plugin Version Found: " + wincapversion.Trim());
                 return wincapversion.Trim();
-            } else
+            }
+            else
             {
 
                 return null;

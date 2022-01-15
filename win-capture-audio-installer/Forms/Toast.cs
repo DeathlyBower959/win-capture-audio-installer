@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using win_capture_audio_installer.Classes;
@@ -28,6 +27,7 @@ namespace win_capture_audio_installer
         private void closeButton_Click(object sender, EventArgs e)
         {
             isClosing = true;
+            timer2.Interval = 1;
             timer2.Start();
         }
 
@@ -35,13 +35,12 @@ namespace win_capture_audio_installer
         {
             if (isClosing)
             {
-
                 this.timer2.Interval = 1;
                 this.Opacity -= 0.1; //Fade in
                 if (this.Opacity <= 0)
                 {
                     timer1.Stop();
-                    Notify.toasts.Remove(this);                    
+                    Notify.toasts.Remove(this);
                     this.Close();
                 }
             }
@@ -74,7 +73,7 @@ namespace win_capture_audio_installer
             {
                 fname = "toast" + i.ToString();
                 var toast = (Toast)Application.OpenForms[fname];
-                
+
                 if (toast == null)
                 {
                     this.Name = fname;

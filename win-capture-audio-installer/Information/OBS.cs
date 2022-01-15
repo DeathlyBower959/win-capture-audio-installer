@@ -1,7 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using win_capture_audio_installer.Classes;
 
 namespace win_capture_audio_installer.Information
@@ -13,6 +12,14 @@ namespace win_capture_audio_installer.Information
         public static bool IsCompatible()
         {
             Version obsVersion = GetVersion();
+
+            if (obsVersion == null)
+            {
+                MAIN.dLogger.Log("OBS version not found!");
+                Notify.Toast("OBS Version", "I couldnt find your version of OBS! Check that it is installed!", 3);
+
+                return false;
+            }
 
             if (obsVersion < MAIN.minOBSVersion)
             {

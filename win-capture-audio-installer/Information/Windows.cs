@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Threading.Tasks;
 using win_capture_audio_installer.Classes;
 
 namespace win_capture_audio_installer.Information
@@ -12,6 +11,13 @@ namespace win_capture_audio_installer.Information
         public static bool IsCompatible()
         {
             int buildVersion = int.Parse(GetBuildVersion());
+
+            if (buildVersion == 0)
+            {
+                MAIN.dLogger.Log("Failed to get windows version!");
+                Notify.Toast("Windows Version", "I couldnt find your version of windows!", 3);
+                return false;
+            }
 
             if (buildVersion < MAIN.minWINVersion)
             {
@@ -43,7 +49,7 @@ namespace win_capture_audio_installer.Information
                     MAIN.dLogger.Log("Current Build: " + version, LogLevel.Success);
 
                     string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    currentText[0] = $"Win Build: {version}";
+                    currentText[0] = $"Windows: {version}";
                     MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
 
                     return version;
