@@ -252,6 +252,7 @@
     <Compile Include="Classes\DownloadManager.cs" />
     <Compile Include="Classes\Notify.cs" />
     <Compile Include="Classes\Powershell.cs" />
+    <Compile Include="Classes\PluginVersion.cs" />
     <Compile Include="Information\OBS.cs" />
     <Compile Include="Information\Windows.cs" />
     <Compile Include="Classes\InternetManager.cs" />

@@ -1,8 +1,11 @@
 ﻿using Guna.UI2.WinForms;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +18,11 @@ namespace win_capture_audio_installer
 {
     public partial class MainWindow : Form
     {
+        [DllImport("user32.dll")]
+        private static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref Point lParam);
+
+        private const int EM_GETSCROLLPOS = 1245;
+        private const int EM_SETSCROLLPOS = 1246;
 
         public Logger dLogger = new Logger(@"C:\temp\win-capture-audio-installer\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public static MainWindow INSTANCE;
@@ -32,6 +40,8 @@ namespace win_capture_audio_installer
             ControlManager.Home();
             DownloadRequiredFiles();
         }
+
+        public List<PluginVersion> versionsList = new List<PluginVersion>();
 
         public void DownloadRequiredFiles()
         {
@@ -65,17 +75,17 @@ namespace win_capture_audio_installer
                     string[] data = File.ReadAllLines(@"C:\temp\win-capture-audio-installer\Data\required.txt");
                     minOBSVersion = new Version(data[0].Split(':')[1]);
                     minWINVersion = int.Parse(data[1].Split(':')[1]);
-                    dLogger.Log($"Retrieved required versions for windows and OBS\nOBS: {minOBSVersion}\nWin: {minWINVersion}", LogLevel.Success);
+                    dLogger.Log($"Retrieved required versions for windows and OBS | OBS: {minOBSVersion} | Win: {minWINVersion}", LogLevel.Success);
                 }
 
                 if (!File.Exists(@"C:\temp\win-capture-audio-installer\Data\latest.json"))
                 {
-                    dLogger.Log("Failed to download latest releases!", LogLevel.Error);
+                    dLogger.Log("Failed to retrieve latest releases!", LogLevel.Error);
                     versionSelector.Invoke(new Action(() =>
                     {
                         versionSelector.Items.Clear();
                     }));
-                    UpdateStatus("Failed to get latest plugin versions...");
+                    UpdateStatus("Failed to retrieve latest plugin versions...");
                     return;
                 }
 
@@ -92,6 +102,7 @@ namespace win_capture_audio_installer
                 }
                 catch (Exception e)
                 {
+                    UpdateStatus("Failed to retrieve latest plugin versions...");
                     dLogger.Log("Failed to parse latest.json", LogLevel.Error);
                     dLogger.Log(e);
                     return;
@@ -100,6 +111,7 @@ namespace win_capture_audio_installer
                 if (latestVersions?.data == null)
                 {
                     dLogger.Log("'data' array is not present in latest.json!", LogLevel.Error);
+                    UpdateStatus("Failed to retrieve latest plugin versions...");
                     return;
                 }
 
@@ -117,23 +129,20 @@ namespace win_capture_audio_installer
                                     {
                                         try
                                         {
-                                            // Make it so when it fails to download, then update status to show it
-                                            await DownloadManager.DownloadAsync(asset.browser_download_url, @"C:\temp\win-capture-audio-installer\Data\versions", release.tag_name + ".zip");
 
-                                            UpdateStatus($"Downloaded: {release.tag_name}");
-
-                                            dLogger.Log("Downloaded: " + release.tag_name, LogLevel.Success);
+                                            versionsList.Add(new PluginVersion() { downloadURL = asset.browser_download_url, tag = release.tag_name });
                                             versionSelector.Invoke(new Action(() =>
                                             {
                                                 if (versionSelector.Items.Contains("Loading...")) versionSelector.Items.Remove("Loading...");
                                                 versionSelector.Items.Add(release.tag_name);
                                             }));
+                                            UpdateStatus($"Found version {release.tag_name}");
 
                                         }
                                         catch (Exception e)
                                         {
-                                            UpdateStatus($"Failed to download: {release.tag_name}");
-                                            dLogger.Log("Failed to download: " + release.tag_name, LogLevel.Error);
+                                            UpdateStatus($"Failed to add: {release.tag_name}");
+                                            dLogger.Log("Failed to add: " + release.tag_name, LogLevel.Error);
                                             dLogger.Log(e);
                                         }
                                     }
@@ -147,14 +156,14 @@ namespace win_capture_audio_installer
                         versionSelector.SelectedIndex = 0;
                     }));
 
-                    UpdateStatus("Finished Downloading Versions...");
+                    UpdateStatus("Finished retriving plugin versions...");
                 }
 
                 catch (Exception e)
                 {
-                    UpdateStatus("Failed to download all versions...");
+                    UpdateStatus("Failed to retrieve releases.");
 
-                    dLogger.Log("Failed to download releases!", LogLevel.Error);
+                    dLogger.Log("Failed to retrieve releases!", LogLevel.Error);
                     dLogger.Log(e);
                 }
 
@@ -334,7 +343,7 @@ namespace win_capture_audio_installer
                         statusText.Text = statusText.Text.Remove(statusText.Text.Length - 1, 1);
 
                     else if (animationType == StatusAnimationType.DoubleEdge)
-                        statusText.Text = statusText.Text.Remove(statusText.Text.Length - 1, 1).Remove(0, 1);
+                        statusText.Text = statusText.Text != string.Empty ? statusText.Text?.Remove(statusText.Text.Length - 1, 1)?.Remove(0, 1) : "" ;
 
                     else if (animationType == StatusAnimationType.Center)
                         statusText.Text = statusText.Text.Remove((Convert.ToInt32(Math.Floor(statusText.Text.Length / 2f))), 1);
@@ -395,5 +404,22 @@ namespace win_capture_audio_installer
         {
             if (versionSelector.GetItemText(versionSelector.SelectedItem) == "Loading...") versionSelector.SelectedIndex = -1;
         }
+
+        private void faqScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            Size size = TextRenderer.MeasureText(faqText.Text, faqText.Font);
+            faqScrollBar.Maximum = size.Height;
+
+            Point p = new Point(0, e.NewValue);
+            SendMessage(faqText.Handle, EM_SETSCROLLPOS, 0, ref p);
+        }
+
+        private void scrollTimer_Tick(object sender, EventArgs e)
+        {
+            Point p = new Point();
+            SendMessage(faqText.Handle, EM_GETSCROLLPOS, 0, ref p);
+            faqScrollBar.Value = p.Y;
+        }
+
     }
 }

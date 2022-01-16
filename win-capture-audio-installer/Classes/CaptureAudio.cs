@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
+using System.Windows;
 using win_capture_audio_installer.Information;
 
 namespace win_capture_audio_installer.Classes
@@ -83,24 +85,6 @@ namespace win_capture_audio_installer.Classes
 
         }
 
-        /// <summary>
-        /// Gets the version names of all the downloaded .zip's (Data\versions)
-        /// </summary>
-        /// <returns>string[]</returns>
-        public static List<string> GetDownloadedVersions()
-        {
-            List<string> versions = new List<string>();
-
-            foreach (FileInfo fileZip in new DirectoryInfo(@"C:\temp\win-capture-audio-installer\Data\versions").GetFiles())
-            {
-                int fileExtPos = fileZip.Name.LastIndexOf(".");
-                if (fileExtPos >= 0)
-                    versions.Add(fileZip.Name.Substring(0, fileExtPos));
-            }
-
-            return versions;
-        }
-
         public static string InstalledVersion()
         {
             string obsLoc = OBS.FindOBSInstallLoc();
@@ -126,8 +110,7 @@ namespace win_capture_audio_installer.Classes
 
         public static bool IsLatestVersion()
         {
-            List<string> versions = GetDownloadedVersions();
-            string latestVersion = versions[versions.Count - 1];
+            string latestVersion = MAIN.versionsList[MAIN.versionsList.Count - 1].tag;
 
             string currentVersion = InstalledVersion();
 
@@ -149,23 +132,44 @@ namespace win_capture_audio_installer.Classes
         /// <para>Plugin Version</para>
         /// <para>Example: v2.1.0-beta</para>
         /// </param>
-        public static void Install(string versionTag = null)
+        public static async void Install(string versionTag = null)
         {
+            if (MAIN.versionsList.Count == 0) return;
             try
             {
-                List<string> versions = (versionTag != null || versionTag.Trim() == string.Empty) ? (new List<string>(new string[1] { versionTag })) : GetDownloadedVersions();
+                Process[] obsInstances = Process.GetProcessesByName("obs64");
+                if (obsInstances.Length > 0)
+                {
+                    if (MessageBox.Show("Would you like me to close OBS?", "Are you sure?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        foreach (var process in obsInstances)
+                        {
+                            process.Kill();
+                            process.WaitForExit();
+                        }
+                    }
+                    else
+                    {
+                        MAIN.dLogger.Log("Canceled installing version, OBS was open...");
+                        return;
+                    }
+                }
 
-                string latestVersion = versions[versions.Count - 1];
+                PluginVersion latestVersion = (versionTag != null || versionTag.Trim() == string.Empty) ? MAIN.versionsList.Find(x => x.tag == versionTag) : MAIN.versionsList[MAIN.versionsList.Count - 1];
+
+                if (latestVersion.tag == null || latestVersion.downloadURL == null)
+                {
+                    MAIN.dLogger.Log($"Plugin version {versionTag} was not found!", LogLevel.Error);
+                    Notify.Toast("Plugin Version", "Failed to find that version!");
+                    return;
+                }
 
                 string obsLoc = OBS.FindOBSInstallLoc();
 
-                string file = Path.Combine(@"C:\temp\win-capture-audio-installer\Data\versions", latestVersion + ".zip");
-                if (!File.Exists(file))
-                {
-                    MAIN.dLogger.Log("Version Not Found: " + latestVersion, LogLevel.Error);
-                    Notify.Toast("Failed to install version: " + latestVersion, "The file was not found! Maybe check your internet?");
-                    return;
-                }
+                string file = @"C:\temp\win-capture-audio-installer\Data\plugin.zip";
+
+                if (File.Exists(file))
+                    File.Delete(file);
 
                 Uninstall();
 
@@ -176,15 +180,50 @@ namespace win_capture_audio_installer.Classes
                     return;
                 }
 
-                ZipFile.ExtractToDirectory(Path.Combine(@"C:\temp\win-capture-audio-installer\Data\versions", latestVersion + ".zip"), obsLoc);
+                MAIN.UpdateStatus($"Downloading version: {latestVersion.tag}...");
+                await DownloadManager.DownloadAsync(
+               latestVersion.downloadURL,
+               @"C:\temp\win-capture-audio-installer\Data",
+               "plugin.zip");
 
-                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"), latestVersion);
-                Notify.Toast("Installed!", $"Version {latestVersion} was successfully installed!", 2);
+                if (!File.Exists(file))
+                {
+                    MAIN.ClearStatus();
+                    MAIN.dLogger.Log("Version Not Found: " + latestVersion.tag, LogLevel.Error);
+                    Notify.Toast("Failed to install version: " + latestVersion.tag, "The file was not found! Maybe check your internet?");
+                    return;
+                }
+
+                MAIN.UpdateStatus($"Installing version: {latestVersion.tag}!");
+                ZipFile.ExtractToDirectory(file, obsLoc);
+
+                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"), latestVersion.tag);
+                MAIN.UpdateStatus($"Installed version: {latestVersion.tag}!");
+
+                Task.Run(() =>
+                {
+                    Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
+                });
+
+
+                if (File.Exists(file))
+                    File.Delete(file);
+
+                string obsPath = Path.Combine(obsLoc, @"bin\64bit\");
+                if (File.Exists(obsPath + "obs64.exe"))
+                {
+                    var res = MessageBox.Show("Would you like me to open OBS?", "Are you sure?", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        Powershell.Invoke($"cd \"{obsPath}\"", "start obs64.exe");
+                    }
+                }
             }
 
             catch (Exception e)
             {
                 MAIN.dLogger.Log(e);
+                MAIN.ClearStatus();
                 Notify.Toast("Failed to install", e.Message);
             }
         }

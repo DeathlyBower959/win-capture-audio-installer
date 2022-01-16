@@ -12,6 +12,17 @@ namespace win_capture_audio_installer.Classes
             PowerShell.Create().AddScript(script).Invoke();
         }
 
+        public static void Invoke(params string[] scripts)
+        {
+            var ps = PowerShell.Create();
+            foreach (string script in scripts)
+            {
+                ps.AddScript(script);
+            }
+
+            ps.Invoke();
+        }
+
         public static async Task<string> Return(string script, string defaultReturn = null)
         {
             string output = defaultReturn;

@@ -54,6 +54,7 @@ namespace win_capture_audio_installer
             this.statusText = new System.Windows.Forms.Label();
             this.installButton = new Guna.UI2.WinForms.Guna2Button();
             this.faqPage = new System.Windows.Forms.TabPage();
+            this.faqScrollBar = new Guna.UI2.WinForms.Guna2VScrollBar();
             this.faqText = new System.Windows.Forms.RichTextBox();
             this.faqPageLabel = new System.Windows.Forms.Label();
             this.settingsPage = new System.Windows.Forms.TabPage();
@@ -61,7 +62,7 @@ namespace win_capture_audio_installer
             this.obsInstallLocLabel = new System.Windows.Forms.Label();
             this.settingsPageLabel = new System.Windows.Forms.Label();
             this.horizontalRule = new System.Windows.Forms.Panel();
-            this.faqScrollBar = new Guna.UI2.WinForms.Guna2VScrollBar();
+            this.scrollTimer = new System.Windows.Forms.Timer(this.components);
             this.sideBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.homeButtonIcon)).BeginInit();
@@ -466,6 +467,24 @@ namespace win_capture_audio_installer
             this.faqPage.TabIndex = 2;
             this.faqPage.Text = "faqPage";
             // 
+            // faqScrollBar
+            // 
+            this.faqScrollBar.AutoRoundedCorners = true;
+            this.faqScrollBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.faqScrollBar.BorderRadius = 8;
+            this.faqScrollBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.faqScrollBar.HoverState.Parent = null;
+            this.faqScrollBar.InUpdate = false;
+            this.faqScrollBar.LargeChange = 10;
+            this.faqScrollBar.Location = new System.Drawing.Point(564, 64);
+            this.faqScrollBar.Name = "faqScrollBar";
+            this.faqScrollBar.PressedState.Parent = this.faqScrollBar;
+            this.faqScrollBar.ScrollbarSize = 18;
+            this.faqScrollBar.Size = new System.Drawing.Size(18, 292);
+            this.faqScrollBar.TabIndex = 96;
+            this.faqScrollBar.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.faqScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.faqScrollBar_Scroll);
+            // 
             // faqText
             // 
             this.faqText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
@@ -569,22 +588,11 @@ namespace win_capture_audio_installer
             this.horizontalRule.Size = new System.Drawing.Size(595, 1);
             this.horizontalRule.TabIndex = 11;
             // 
-            // faqScrollBar
+            // scrollTimer
             // 
-            this.faqScrollBar.AutoRoundedCorners = true;
-            this.faqScrollBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.faqScrollBar.BorderRadius = 8;
-            this.faqScrollBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.faqScrollBar.HoverState.Parent = null;
-            this.faqScrollBar.InUpdate = false;
-            this.faqScrollBar.LargeChange = 10;
-            this.faqScrollBar.Location = new System.Drawing.Point(564, 64);
-            this.faqScrollBar.Name = "faqScrollBar";
-            this.faqScrollBar.PressedState.Parent = this.faqScrollBar;
-            this.faqScrollBar.ScrollbarSize = 18;
-            this.faqScrollBar.Size = new System.Drawing.Size(18, 292);
-            this.faqScrollBar.TabIndex = 96;
-            this.faqScrollBar.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.scrollTimer.Enabled = true;
+            this.scrollTimer.Interval = 1;
+            this.scrollTimer.Tick += new System.EventHandler(this.scrollTimer_Tick);
             // 
             // MainWindow
             // 
@@ -653,5 +661,6 @@ namespace win_capture_audio_installer
         public System.Windows.Forms.Label obsInstallLocLabel;
         public System.Windows.Forms.TabPage settingsPage;
         private Guna.UI2.WinForms.Guna2VScrollBar faqScrollBar;
+        private System.Windows.Forms.Timer scrollTimer;
     }
 }
