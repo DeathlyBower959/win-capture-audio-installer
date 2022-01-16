@@ -10,7 +10,7 @@ You can download the installer from [here](https://github.com/DeathlyBower959/wi
 
 ### Developers
 1. Clone repo to local machine.
-2. Open the `.sln` in Visual Studio 2019.
+2. Open the `.sln` in Visual Studio.
 3. Edit the file in `Debug` mode.
 ###
 1. Once finished editing, switch to `Release` mode.
