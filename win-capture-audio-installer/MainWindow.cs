@@ -343,7 +343,7 @@ namespace win_capture_audio_installer
                         statusText.Text = statusText.Text.Remove(statusText.Text.Length - 1, 1);
 
                     else if (animationType == StatusAnimationType.DoubleEdge)
-                        statusText.Text = statusText.Text != string.Empty ? statusText.Text?.Remove(statusText.Text.Length - 1, 1)?.Remove(0, 1) : "" ;
+                        statusText.Text = statusText.Text != string.Empty ? statusText.Text?.Remove(statusText.Text.Length - 1, 1)?.Remove(0, 1) : "";
 
                     else if (animationType == StatusAnimationType.Center)
                         statusText.Text = statusText.Text.Remove((Convert.ToInt32(Math.Floor(statusText.Text.Length / 2f))), 1);

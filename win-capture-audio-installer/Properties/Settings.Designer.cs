@@ -34,29 +34,5 @@ namespace win_capture_audio_installer.Properties {
                 this["OBSInstall"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoUpdate {
-            get {
-                return ((bool)(this["AutoUpdate"]));
-            }
-            set {
-                this["AutoUpdate"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoOpenClose {
-            get {
-                return ((bool)(this["AutoOpenClose"]));
-            }
-            set {
-                this["AutoOpenClose"] = value;
-            }
-        }
     }
 }

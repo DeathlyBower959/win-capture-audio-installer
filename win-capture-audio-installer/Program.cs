@@ -14,8 +14,9 @@ namespace win_capture_audio_installer
         static Mutex mutex = new Mutex(true, "win-capture-audio-installer.DeathlyBower959", out result);
 
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
+            // Checks if app already open
             if (!result) return;
 
             try
