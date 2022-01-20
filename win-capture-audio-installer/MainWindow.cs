@@ -408,7 +408,7 @@ namespace win_capture_audio_installer
         private void faqScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             Size size = TextRenderer.MeasureText(faqText.Text, faqText.Font);
-            faqScrollBar.Maximum = size.Height;
+            faqScrollBar.Maximum = size.Height + 18;
 
             Point p = new Point(0, e.NewValue);
             SendMessage(faqText.Handle, EM_SETSCROLLPOS, 0, ref p);

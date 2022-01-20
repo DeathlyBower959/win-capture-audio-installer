@@ -200,10 +200,7 @@ namespace win_capture_audio_installer.Classes
                 File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"), latestVersion.tag);
                 MAIN.UpdateStatus($"Installed version: {latestVersion.tag}!");
 
-                Task.Run(() =>
-                {
                     Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
-                });
 
 
                 if (File.Exists(file))
