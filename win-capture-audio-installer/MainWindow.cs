@@ -49,7 +49,7 @@ namespace win_capture_audio_installer
             {
                 UpdateStatus("Getting latest plugin versions...", false);
                 await DownloadManager.DownloadAsync(
-               "https://github.com/DeathlyBower959/application-latest-releases/blob/main/release-versions/win-capture-audio-latest.json?raw=true",
+               "https://raw.githubusercontent.com/DeathlyBower959/github-repo-info/main/release-versions/bozbez/win-capture-audio.json",
                @"C:\temp\win-capture-audio-installer\Data",
                "latest.json");
 
