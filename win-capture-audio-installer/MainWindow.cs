@@ -421,5 +421,10 @@ namespace win_capture_audio_installer
             faqScrollBar.Value = p.Y;
         }
 
+        private void UninstallButton_Click(object sender, EventArgs e)
+        {
+            UpdateStatus("Uninstalling the plugin...");
+            CaptureAudio.Uninstall();
+        }
     }
 }

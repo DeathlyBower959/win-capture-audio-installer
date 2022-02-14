@@ -22,6 +22,7 @@ namespace win_capture_audio_installer.Classes
             if (!Directory.Exists(obsLoc))
             {
                 MAIN.dLogger.Log("Failed to uninstall: OBS Location Not Found", LogLevel.Error);
+                /*Notify.Toast("Uninstall Plugin", "I failed to uninstall the plugin!");*/
                 return;
             }
 
@@ -39,6 +40,8 @@ namespace win_capture_audio_installer.Classes
             {
                 Directory.Delete(Path.Combine(obsLoc, "data\\obs-plugins\\win-capture-audio"), true);
             }
+
+            MAIN.UpdateStatus("Plugin Uninstalled!");
         }
 
         /// <summary>
@@ -160,7 +163,7 @@ namespace win_capture_audio_installer.Classes
                 if (latestVersion.tag == null || latestVersion.downloadURL == null)
                 {
                     MAIN.dLogger.Log($"Plugin version {versionTag} was not found!", LogLevel.Error);
-                    Notify.Toast("Plugin Version", "Failed to find that version!");
+                    /*Notify.Toast("Plugin Version", "Failed to find that version!");*/
                     return;
                 }
 
@@ -176,7 +179,8 @@ namespace win_capture_audio_installer.Classes
                 if (obsLoc == null)
                 {
                     MAIN.dLogger.Log("OBS install location not found", LogLevel.Error);
-                    Notify.Toast("OBS not found", "I could not find the install location of OBS! Head over to the settings page, and make sure the location is correct.");
+                    MAIN.UpdateStatus("I failed to find the install location of OBS! Try heading over to the settings page, and make sure that the location is correct!");
+                    /*Notify.Toast("OBS not found", "I could not find the install location of OBS! Head over to the settings page, and make sure the location is correct.");*/
                     return;
                 }
 
@@ -190,7 +194,8 @@ namespace win_capture_audio_installer.Classes
                 {
                     MAIN.ClearStatus();
                     MAIN.dLogger.Log("Version Not Found: " + latestVersion.tag, LogLevel.Error);
-                    Notify.Toast("Failed to install version: " + latestVersion.tag, "The file was not found! Maybe check your internet?");
+                    MAIN.UpdateStatus("The version was not found! Maybe check your internet?");
+                    /*Notify.Toast("Failed to install version: " + latestVersion.tag, "The file was not found! Maybe check your internet?");*/
                     return;
                 }
 
