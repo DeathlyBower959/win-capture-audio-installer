@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -10,8 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using win_capture_audio_installer.Classes;
+using win_capture_audio_installer.Classes.Structs;
 using win_capture_audio_installer.Information;
-using win_capture_audio_installer.ReleaseClasses;
 using WK.Libraries.BetterFolderBrowserNS;
 
 namespace win_capture_audio_installer
@@ -48,10 +49,7 @@ namespace win_capture_audio_installer
             Task.Run(async () =>
             {
                 UpdateStatus("Getting latest plugin versions...", false);
-                await DownloadManager.DownloadAsync(
-               "https://raw.githubusercontent.com/DeathlyBower959/github-repo-info/main/release-versions/bozbez/win-capture-audio.json",
-               @"C:\temp\win-capture-audio-installer\Data",
-               "latest.json");
+                List<GithubRelease.Root> latestVersions = Web.GetReleases();
 
 #if DEBUG
                 File.Copy("../../../Resources/FAQ.rtf", @"C:\temp\win-capture-audio-installer\Data\FAQ.rtf", true);
@@ -78,7 +76,7 @@ namespace win_capture_audio_installer
                     dLogger.Log($"Retrieved required versions for windows and OBS | OBS: {minOBSVersion} | Win: {minWINVersion}", LogLevel.Success);
                 }
 
-                if (!File.Exists(@"C:\temp\win-capture-audio-installer\Data\latest.json"))
+                if (latestVersions == null)
                 {
                     dLogger.Log("Failed to retrieve latest releases!", LogLevel.Error);
                     versionSelector.Invoke(new Action(() =>
@@ -95,54 +93,34 @@ namespace win_capture_audio_installer
                     versionSelector.Items.Add("Loading...");
                 }));
 
-                Releases latestVersions;
                 try
                 {
-                    latestVersions = JsonConvert.DeserializeObject<Releases>(File.ReadAllText(@"C:\temp\win-capture-audio-installer\Data\latest.json"));
-                }
-                catch (Exception e)
-                {
-                    UpdateStatus("Failed to retrieve latest plugin versions...");
-                    dLogger.Log("Failed to parse latest.json", LogLevel.Error);
-                    dLogger.Log(e);
-                    return;
-                }
-
-                if (latestVersions?.data == null)
-                {
-                    dLogger.Log("'data' array is not present in latest.json!", LogLevel.Error);
-                    UpdateStatus("Failed to retrieve latest plugin versions...");
-                    return;
-                }
-
-                try
-                {
-                    foreach (Releases.Release release in latestVersions.data)
+                    foreach (GithubRelease.Root release in latestVersions)
                     {
-                        if (release?.assets != null && release?.tag_name != null)
+                        if (release.Assets != null && release.TagName != null)
                         {
-                            foreach (Releases.Asset asset in release.assets)
+                            foreach (GithubRelease.Asset asset in release.Assets)
                             {
-                                if (asset?.name != null && asset?.browser_download_url != null)
+                                if (asset.Name != null && asset.BrowserDownloadUrl != null)
                                 {
-                                    if (asset.name.Contains("win-capture-audio") && asset.name.EndsWith(".zip") || asset.name.EndsWith(".zip"))
+                                    if (asset.Name.Contains("win-capture-audio") && asset.Name.EndsWith(".zip") || asset.Name.EndsWith(".zip"))
                                     {
                                         try
                                         {
 
-                                            versionsList.Add(new PluginVersion() { downloadURL = asset.browser_download_url, tag = release.tag_name });
+                                            versionsList.Add(new PluginVersion() { downloadURL = asset.BrowserDownloadUrl, tag = release.TagName });
                                             versionSelector.Invoke(new Action(() =>
                                             {
                                                 if (versionSelector.Items.Contains("Loading...")) versionSelector.Items.Remove("Loading...");
-                                                versionSelector.Items.Add(release.tag_name);
+                                                versionSelector.Items.Add(release.TagName);
                                             }));
-                                            UpdateStatus($"Found version {release.tag_name}");
+                                            UpdateStatus($"Found version {release.TagName}");
 
                                         }
                                         catch (Exception e)
                                         {
-                                            UpdateStatus($"Failed to add: {release.tag_name}");
-                                            dLogger.Log("Failed to add: " + release.tag_name, LogLevel.Error);
+                                            UpdateStatus($"Failed to add: {release.TagName}");
+                                            dLogger.Log("Failed to add: " + release.TagName, LogLevel.Error);
                                             dLogger.Log(e);
                                         }
                                     }
@@ -425,6 +403,11 @@ namespace win_capture_audio_installer
         {
             UpdateStatus("Uninstalling the plugin...");
             CaptureAudio.Uninstall();
+        }
+
+        private void helpVideoButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.youtube.com/watch?v=a_gYy27eTTw");
         }
     }
 }
