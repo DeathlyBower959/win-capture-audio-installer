@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.IO;
 using win_capture_audio_installer.Classes;
 
@@ -8,6 +9,8 @@ namespace win_capture_audio_installer.Information
     public static class OBS
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
+
+        static string STEAM_OBS_APPID = "1905180";
 
         public static bool IsCompatible()
         {
@@ -61,8 +64,10 @@ namespace win_capture_audio_installer.Information
 
             var currentInstall = windowsCurrentInstall();
             if (currentInstall != null) return currentInstall;
-            var wownode = WOWNode();
-            if (wownode != null) return wownode;
+            var wowNode = WOWNode();
+            if (wowNode != null) return wowNode;
+            var steamApp = SteamApp();
+            if (steamApp != null) return steamApp;
 
             return "";
         }
@@ -93,6 +98,28 @@ namespace win_capture_audio_installer.Information
                 catch { }
             }
             MAIN.dLogger.Log("Failed to find OBS install location using WOW6432Node", LogLevel.Error);
+
+
+            return null;
+        }
+
+        private static string SteamApp()
+        {
+            MAIN.dLogger.Log("Searching Steam App for OBS install location");
+
+            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+
+            RegistryKey steamParentKey = lm.OpenSubKey($@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App {STEAM_OBS_APPID}");
+            string steamInstallLoc = steamParentKey.GetValue("InstallLocation").ToString();
+            if (steamInstallLoc != null)
+            {
+                MAIN.dLogger.Log("Steam App | OBS Install Loc: " + steamInstallLoc, LogLevel.Success);
+
+                return steamInstallLoc;
+            }
+
+            MAIN.dLogger.Log("Failed to find OBS install location using Steam App", LogLevel.Error);
+
             return null;
         }
 
@@ -134,6 +161,8 @@ namespace win_capture_audio_installer.Information
             RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
             RegistryKey parentKey = lm.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
 
+            string version = string.Empty;
+
             string[] nameList = parentKey.GetSubKeyNames();
             for (int i = 0; i < nameList.Length; i++)
             {
@@ -144,7 +173,7 @@ namespace win_capture_audio_installer.Information
                     {
                         if (regKey.GetValue("DisplayVersion") != null)
                         {
-                            string version = regKey.GetValue("DisplayVersion").ToString();
+                            version = regKey.GetValue("DisplayVersion").ToString();
                             MAIN.dLogger.Log("WOW6432Node | OBS Version: " + version, LogLevel.Success);
 
                             string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
@@ -157,7 +186,20 @@ namespace win_capture_audio_installer.Information
                 }
                 catch { }
             }
-            MAIN.dLogger.Log("Failed to find OBS version using WOW6432Node", LogLevel.Error);
+
+            MAIN.dLogger.Log("Failed to find OBS version using WOW6432Node, attempting to check for steam install...", LogLevel.Error);
+
+            var versionInfo = FileVersionInfo.GetVersionInfo(@"G:\Steam\steamapps\common\OBS Studio\bin\64bit\obs64.exe");
+            version = versionInfo.FileVersion;
+            if (version != null)
+            {
+                string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                currentText[1] = $"OBS: {version}";
+                MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
+
+                return new Version(version);
+            }
+
             return null;
         }
     }

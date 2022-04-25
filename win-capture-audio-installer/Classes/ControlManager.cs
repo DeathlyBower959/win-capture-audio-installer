@@ -17,22 +17,6 @@ namespace win_capture_audio_installer.Classes
             MAIN.obsInstallLocationSelector.Checked = isOBSFolder;
 
             if (!isOBSFolder) Properties.Settings.Default.OBSInstall = "auto";
-
-            /*List<string> versions = CaptureAudio.GetDownloadedVersions();
-            versions.Reverse();
-            MAIN.versionSelector.Invoke(new Action(() =>
-            {
-                MAIN.versionSelector.Items.Clear();
-                if (versions.Count > 0)
-                {
-                    foreach (string version in versions)
-                    {
-                        MAIN.versionSelector.Items.Add(version);
-                    }
-                }
-
-                MAIN.versionSelector.SelectedIndex = 0;
-            }));*/
         }
 
         public static void FAQ()

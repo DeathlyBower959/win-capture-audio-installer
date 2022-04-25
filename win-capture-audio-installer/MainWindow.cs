@@ -1,5 +1,4 @@
 ﻿using Guna.UI2.WinForms;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -166,53 +165,28 @@ namespace win_capture_audio_installer
         }
 
         private bool _isClosing = false;
-        private string confirmClose = string.Empty;
         private void closeApp(string logText)
         {
             if (_isClosing) return;
             Properties.Settings.Default.Save();
-            if (confirmClose == string.Empty)
+
+            _isClosing = true;
+
+            dLogger.Log(logText);
+
+            //Close all loggers
+            FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+            foreach (FieldInfo fieldInfo in fis)
             {
-
-                _isClosing = true;
-
-                dLogger.Log(logText);
-
-                //Close all loggers
-                FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                foreach (FieldInfo fieldInfo in fis)
+                if (fieldInfo.FieldType == typeof(Logger))
                 {
-                    if (fieldInfo.FieldType == typeof(Logger))
-                    {
-                        var logger = fieldInfo.GetValue(this) as Logger;
-                        logger.Disable();
-                    }
-                }
-
-                fadeOut.Start();
-            }
-            else
-            {
-                if (MessageBox.Show(confirmClose, "Are you sure you want to quit?", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    _isClosing = true;
-
-                    dLogger.Log(logText);
-
-                    //Close all loggers
-                    FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                    foreach (FieldInfo fieldInfo in fis)
-                    {
-                        if (fieldInfo.FieldType == typeof(Logger))
-                        {
-                            var logger = fieldInfo.GetValue(this) as Logger;
-                            logger.Disable();
-                        }
-                    }
-
-                    fadeOut.Start();
+                    var logger = fieldInfo.GetValue(this) as Logger;
+                    logger.Disable();
                 }
             }
+
+            fadeOut.Start();
+
         }
 
         private void minimizeButton_Click(object sender, EventArgs e)

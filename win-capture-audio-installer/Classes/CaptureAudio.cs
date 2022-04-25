@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Forms;
 using win_capture_audio_installer.Information;
 
 namespace win_capture_audio_installer.Classes
@@ -143,7 +143,7 @@ namespace win_capture_audio_installer.Classes
                 Process[] obsInstances = Process.GetProcessesByName("obs64");
                 if (obsInstances.Length > 0)
                 {
-                    if (MessageBox.Show("Would you like me to close OBS?", "Are you sure?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    if (MessageBox.Show(MAIN, "Would you like me to close OBS?", "Are you sure?", MessageBoxButtons.YesNo)  == DialogResult.Yes)
                     {
                         foreach (var process in obsInstances)
                         {
@@ -214,10 +214,10 @@ namespace win_capture_audio_installer.Classes
                 string obsPath = Path.Combine(obsLoc, @"bin\64bit\");
                 if (File.Exists(obsPath + "obs64.exe"))
                 {
-                    var res = MessageBox.Show("Would you like me to open OBS?", "Are you sure?", MessageBoxButton.YesNo);
-                    if (res == MessageBoxResult.Yes)
+                    var res = MessageBox.Show(MAIN, "Would you like me to open OBS?", "Are you sure?", MessageBoxButtons.YesNo);
+                    if (res == DialogResult.Yes)
                     {
-                        Powershell.Invoke($"cd \"{obsPath}\"", "start obs64.exe");
+                        Process.Start($@"{obsPath}\obs64.exe");
                     }
                 }
             }
