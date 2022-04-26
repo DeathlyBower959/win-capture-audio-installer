@@ -594,7 +594,6 @@ namespace win_capture_audio_installer
             this.settingsPage.Name = "settingsPage";
             this.settingsPage.Size = new System.Drawing.Size(567, 364);
             this.settingsPage.TabIndex = 4;
-            this.settingsPage.Text = "t";
             // 
             // obsInstallLocationSelector
             // 

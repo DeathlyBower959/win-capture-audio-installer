@@ -174,8 +174,6 @@ namespace win_capture_audio_installer.Classes
                 if (File.Exists(file))
                     File.Delete(file);
 
-                Uninstall();
-
                 if (obsLoc == null)
                 {
                     MAIN.dLogger.Log("OBS install location not found", LogLevel.Error);
@@ -183,6 +181,8 @@ namespace win_capture_audio_installer.Classes
                     /*Notify.Toast("OBS not found", "I could not find the install location of OBS! Head over to the settings page, and make sure the location is correct.");*/
                     return;
                 }
+
+                Uninstall();
 
                 MAIN.UpdateStatus($"Downloading version: {latestVersion.tag}...");
                 await DownloadManager.DownloadAsync(
@@ -205,19 +205,18 @@ namespace win_capture_audio_installer.Classes
                 File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"), latestVersion.tag);
                 MAIN.UpdateStatus($"Installed version: {latestVersion.tag}!");
 
-                    Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
+                Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
 
 
                 if (File.Exists(file))
                     File.Delete(file);
 
-                string obsPath = Path.Combine(obsLoc, @"bin\64bit\");
-                if (File.Exists(obsPath + "obs64.exe"))
+                string obsBinPath = Path.Combine(obsLoc, @"bin\64bit\");
+                if (File.Exists(obsBinPath + "obs64.exe"))
                 {
-                    var res = MessageBox.Show(MAIN, "Would you like me to open OBS?", "Are you sure?", MessageBoxButtons.YesNo);
-                    if (res == DialogResult.Yes)
+                    if (MessageBox.Show(MAIN, "Would you like me to open OBS?", "Are you sure?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        Process.Start($@"{obsPath}\obs64.exe");
+                        Powershell.Invoke($"cd \"{obsBinPath}\"", "start obs64.exe");
                     }
                 }
             }
