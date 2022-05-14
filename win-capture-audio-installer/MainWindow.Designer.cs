@@ -50,7 +50,7 @@ namespace win_capture_audio_installer
             this.dragControl = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.tabControl = new Guna.UI2.WinForms.Guna2TabControl();
             this.homePage = new System.Windows.Forms.TabPage();
-            this.UninstallButton = new Guna.UI2.WinForms.Guna2Button();
+            this.uninstallButton = new Guna.UI2.WinForms.Guna2Button();
             this.versionSelector = new Guna.UI2.WinForms.Guna2ComboBox();
             this.statusText = new System.Windows.Forms.Label();
             this.installButton = new Guna.UI2.WinForms.Guna2Button();
@@ -390,7 +390,7 @@ namespace win_capture_audio_installer
             // homePage
             // 
             this.homePage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.homePage.Controls.Add(this.UninstallButton);
+            this.homePage.Controls.Add(this.uninstallButton);
             this.homePage.Controls.Add(this.versionSelector);
             this.homePage.Controls.Add(this.statusText);
             this.homePage.Controls.Add(this.installButton);
@@ -403,31 +403,31 @@ namespace win_capture_audio_installer
             // 
             // UninstallButton
             // 
-            this.UninstallButton.Animated = true;
-            this.UninstallButton.AutoRoundedCorners = true;
-            this.UninstallButton.BackColor = System.Drawing.Color.Transparent;
-            this.UninstallButton.BorderRadius = 15;
-            this.UninstallButton.CheckedState.Parent = this.UninstallButton;
-            this.UninstallButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.UninstallButton.CustomImages.Parent = this.UninstallButton;
-            this.UninstallButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.UninstallButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.UninstallButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.UninstallButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.UninstallButton.DisabledState.Parent = this.UninstallButton;
-            this.UninstallButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.UninstallButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.UninstallButton.ForeColor = System.Drawing.Color.White;
-            this.UninstallButton.HoverState.Parent = this.UninstallButton;
-            this.UninstallButton.Location = new System.Drawing.Point(455, 324);
-            this.UninstallButton.Name = "UninstallButton";
-            this.UninstallButton.ShadowDecoration.Parent = this.UninstallButton;
-            this.UninstallButton.Size = new System.Drawing.Size(109, 32);
-            this.UninstallButton.TabIndex = 87;
-            this.UninstallButton.TabStop = false;
-            this.UninstallButton.Text = "Uninstall";
-            this.UninstallButton.UseTransparentBackground = true;
-            this.UninstallButton.Click += new System.EventHandler(this.UninstallButton_Click);
+            this.uninstallButton.Animated = true;
+            this.uninstallButton.AutoRoundedCorners = true;
+            this.uninstallButton.BackColor = System.Drawing.Color.Transparent;
+            this.uninstallButton.BorderRadius = 15;
+            this.uninstallButton.CheckedState.Parent = this.uninstallButton;
+            this.uninstallButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.uninstallButton.CustomImages.Parent = this.uninstallButton;
+            this.uninstallButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.uninstallButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.uninstallButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.uninstallButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.uninstallButton.DisabledState.Parent = this.uninstallButton;
+            this.uninstallButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.uninstallButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.uninstallButton.ForeColor = System.Drawing.Color.White;
+            this.uninstallButton.HoverState.Parent = this.uninstallButton;
+            this.uninstallButton.Location = new System.Drawing.Point(455, 324);
+            this.uninstallButton.Name = "UninstallButton";
+            this.uninstallButton.ShadowDecoration.Parent = this.uninstallButton;
+            this.uninstallButton.Size = new System.Drawing.Size(109, 32);
+            this.uninstallButton.TabIndex = 87;
+            this.uninstallButton.TabStop = false;
+            this.uninstallButton.Text = "Uninstall";
+            this.uninstallButton.UseTransparentBackground = true;
+            this.uninstallButton.Click += new System.EventHandler(this.UninstallButton_Click);
             // 
             // versionSelector
             // 
@@ -730,7 +730,7 @@ namespace win_capture_audio_installer
         private Guna.UI2.WinForms.Guna2VScrollBar faqScrollBar;
         private System.Windows.Forms.Timer scrollTimer;
         private System.Windows.Forms.Label appTitle;
-        private Guna.UI2.WinForms.Guna2Button UninstallButton;
+        private Guna.UI2.WinForms.Guna2Button uninstallButton;
         private Guna.UI2.WinForms.Guna2Button helpVideoButton;
     }
 }

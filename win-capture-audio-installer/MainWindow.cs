@@ -106,7 +106,6 @@ namespace win_capture_audio_installer
                                     {
                                         try
                                         {
-
                                             versionsList.Add(new PluginVersion() { downloadURL = asset.BrowserDownloadUrl, tag = release.TagName });
                                             versionSelector.Invoke(new Action(() =>
                                             {
@@ -307,14 +306,24 @@ namespace win_capture_audio_installer
             }));
         }
 
-        private void installButton_Click(object sender, EventArgs e)
+        private async void installButton_Click(object sender, EventArgs e)
         {
+            installButton.Enabled = false;
+            uninstallButton.Enabled = false;
+
             bool obsCompat = OBS.IsCompatible();
             bool winCompat = Windows.IsCompatible();
 
-            if (!obsCompat || !winCompat) return;
+            if (!obsCompat || !winCompat)
+            {
+                installButton.Enabled = true;
+                uninstallButton.Enabled = true;
+                return;
+            }
 
-            CaptureAudio.Install(versionSelector.GetItemText(versionSelector.SelectedItem));
+            await CaptureAudio.Install(versionSelector.GetItemText(versionSelector.SelectedItem));
+            installButton.Enabled = true;
+            uninstallButton.Enabled = true;
         }
 
         private void obsInstallLocationSelector_Click(object sender, EventArgs e)
@@ -373,10 +382,16 @@ namespace win_capture_audio_installer
             faqScrollBar.Value = p.Y;
         }
 
-        private void UninstallButton_Click(object sender, EventArgs e)
+        private async void UninstallButton_Click(object sender, EventArgs e)
         {
+            installButton.Enabled = false;
+            uninstallButton.Enabled = false;
+
             UpdateStatus("Uninstalling the plugin...");
-            CaptureAudio.Uninstall();
+            await CaptureAudio.Uninstall();
+
+            installButton.Enabled = true;
+            uninstallButton.Enabled = true;
         }
 
         private void helpVideoButton_Click(object sender, EventArgs e)

@@ -11,6 +11,7 @@ namespace win_capture_audio_installer.Information
         static MainWindow MAIN = MainWindow.INSTANCE;
 
         static string STEAM_OBS_APPID = "1905180";
+        static string DEFAULT_OBS_LOCATION = @"C:\Program Files\obs-studio";
 
         public static bool IsCompatible()
         {
@@ -36,15 +37,15 @@ namespace win_capture_audio_installer.Information
         public static bool IsOBSFolder(string path)
         {
             string[] required = new string[] {
-                "bin\\64bit",
-                "bin\\64bit\\obs64.exe",
+                "bin\\{{WINBIT}}bit",
+                "bin\\{{WINBIT}}bit\\obs{{WINBIT}}.exe",
                 "data",
                 "obs-plugins"
             };
 
             foreach (string i in required)
             {
-                if (!Directory.Exists(Path.Combine(path, i)) && !File.Exists(Path.Combine(path, i))) return false;
+                if (!Directory.Exists(Path.Combine(path, i)) && !File.Exists(Path.Combine(path, i.Replace("{{WINBIT}}", Environment.Is64BitOperatingSystem ? "64": "32")))) return false;
             }
 
             return true;
@@ -58,16 +59,20 @@ namespace win_capture_audio_installer.Information
                 else
                 {
                     Properties.Settings.Default.OBSInstall = "auto";
-                    Notify.Toast("OBS Install", "OBS install location is not valid, it has been reset to automatically find!");
+                    Notify.Toast("OBS Install", "OBS install location is not valid, it has been reset to automatically search for!");
                 }
             }
 
-            var currentInstall = windowsCurrentInstall();
-            if (currentInstall != null) return currentInstall;
-            var wowNode = WOWNode();
-            if (wowNode != null) return wowNode;
-            var steamApp = SteamApp();
-            if (steamApp != null) return steamApp;
+            if (IsOBSFolder(DEFAULT_OBS_LOCATION)) return DEFAULT_OBS_LOCATION;
+
+            string installLocation = WindowsCurrentInstall();
+            if (installLocation != null) return installLocation;
+            
+            installLocation = WOWNode();
+            if (installLocation != null) return installLocation;
+            
+            installLocation = SteamApp();
+            if (installLocation != null) return installLocation;
 
             return "";
         }
@@ -123,7 +128,7 @@ namespace win_capture_audio_installer.Information
             return null;
         }
 
-        private static string windowsCurrentInstall()
+        private static string WindowsCurrentInstall()
         {
             MAIN.dLogger.Log("Searching CurrentVersion\\Uninstall for OBS install location");
             RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
@@ -156,41 +161,10 @@ namespace win_capture_audio_installer.Information
 
         public static Version GetVersion()
         {
-            MAIN.dLogger.Log("Searching WOW6432Node for OBS version");
+            string obsInstallLoc = FindOBSInstallLoc();
 
-            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            RegistryKey parentKey = lm.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
-
-            string version = string.Empty;
-
-            string[] nameList = parentKey.GetSubKeyNames();
-            for (int i = 0; i < nameList.Length; i++)
-            {
-                RegistryKey regKey = parentKey.OpenSubKey(nameList[i]);
-                try
-                {
-                    if (nameList[i].ToLower() == "obs studio")
-                    {
-                        if (regKey.GetValue("DisplayVersion") != null)
-                        {
-                            version = regKey.GetValue("DisplayVersion").ToString();
-                            MAIN.dLogger.Log("WOW6432Node | OBS Version: " + version, LogLevel.Success);
-
-                            string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                            currentText[1] = $"OBS: {version}";
-                            MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
-
-                            return new Version(version);
-                        }
-                    }
-                }
-                catch { }
-            }
-
-            MAIN.dLogger.Log("Failed to find OBS version using WOW6432Node, attempting to check for steam install...", LogLevel.Error);
-
-            var versionInfo = FileVersionInfo.GetVersionInfo(@"G:\Steam\steamapps\common\OBS Studio\bin\64bit\obs64.exe");
-            version = versionInfo.FileVersion;
+            var versionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(obsInstallLoc, @"bin\64bit\obs64.exe"));
+            string version = versionInfo.FileVersion;
             if (version != null)
             {
                 string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
