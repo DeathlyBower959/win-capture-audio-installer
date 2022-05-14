@@ -253,6 +253,7 @@
     <Compile Include="Classes\ControlManager.cs" />
     <Compile Include="Classes\DebugLogger.cs" />
     <Compile Include="Classes\DownloadManager.cs" />
+    <Compile Include="Classes\Extensions\StringExtensions.cs" />
     <Compile Include="Classes\Notify.cs" />
     <Compile Include="Classes\Powershell.cs" />
     <Compile Include="Classes\PluginVersion.cs" />

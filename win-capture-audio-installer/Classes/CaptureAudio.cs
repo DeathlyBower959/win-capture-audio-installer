@@ -11,6 +11,7 @@ namespace win_capture_audio_installer.Classes
     public class CaptureAudio
     {
         static MainWindow MAIN = MainWindow.INSTANCE;
+        
         /// <summary>
         /// Uninstalls the plugin
         /// </summary>
@@ -26,19 +27,24 @@ namespace win_capture_audio_installer.Classes
 
             }
 
-            if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.dll")))
+            if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.dll".FormatArch())))
             {
-                File.Delete(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.dll"));
+                File.Delete(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.dll".FormatArch()));
             }
 
-            if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.pdb")))
+            if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.pdb".FormatArch())))
             {
-                File.Delete(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.pdb"));
+                File.Delete(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.pdb".FormatArch()));
             }
 
-            if (Directory.Exists(Path.Combine(obsLoc, "data\\obs-plugins\\win-capture-audio")))
+            if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio-version.txt".FormatArch())))
             {
-                Directory.Delete(Path.Combine(obsLoc, "data\\obs-plugins\\win-capture-audio"), true);
+                File.Delete(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio-version.txt".FormatArch()));
+            }
+
+            if (Directory.Exists(Path.Combine(obsLoc, "data\\obs-plugins\\win-capture-audio".FormatArch())))
+            {
+                Directory.Delete(Path.Combine(obsLoc, "data\\obs-plugins\\win-capture-audio".FormatArch()), true);
             }
 
             MAIN.UpdateStatus("Plugin Uninstalled!");
@@ -58,7 +64,7 @@ namespace win_capture_audio_installer.Classes
                 return false;
             }
 
-            if (!Directory.Exists(Path.Combine(obsLoc, "obs-plugins\\64bit")))
+            if (!Directory.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}".FormatArch())))
             {
                 MAIN.dLogger.Log("Failed to validate if installed: OBS Plugins Not Found", LogLevel.Error);
                 return false;
@@ -76,7 +82,8 @@ namespace win_capture_audio_installer.Classes
                 return false;
             }
 
-            if (!File.Exists(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.dll")) || !File.Exists(Path.Combine(obsLoc, "obs-plugins\\64bit\\win-capture-audio.pdb")))
+
+            if (!File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.dll".FormatArch())) || !File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.pdb".FormatArch())))
             {
                 MAIN.dLogger.Log("Not Installed: Plugin DLL not found", LogLevel.Error);
                 return false;
@@ -98,16 +105,22 @@ namespace win_capture_audio_installer.Classes
                 return null;
             }
 
-            if (File.Exists(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt")))
+            if (File.Exists(Path.Combine(obsLoc, @"obs-plugins\{{ARCHBIT}}\win-capture-audio-version.txt".FormatArch())))
             {
-                string wincapversion = File.ReadAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"));
-                MAIN.dLogger.Log("Plugin Version Found: " + wincapversion.Trim());
-                return wincapversion.Trim();
+                string wincapversion = File.ReadAllText(Path.Combine(obsLoc, @"obs-plugins\{{ARCHBIT}}\win-capture-audio-version.txt".FormatArch())).Trim();
+                MAIN.dLogger.Log("Plugin Version Found: " + wincapversion);
+
+                string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                currentText[2] = $"Plugin: {wincapversion}";
+                MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
+                return wincapversion;
             }
             else
             {
-
-                return null;
+                string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                currentText[2] = $"Plugin: Uninstalled";
+                MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
+                return "";
             }
         }
 
@@ -140,7 +153,7 @@ namespace win_capture_audio_installer.Classes
             if (MAIN.versionsList.Count == 0) return;
             try
             {
-                Process[] obsInstances = Process.GetProcessesByName("obs64");
+                Process[] obsInstances = Process.GetProcessesByName("obs{{ARCH}}".FormatArch());
                 if (obsInstances.Length > 0)
                 {
                     if (MessageBox.Show(MAIN, "Would you like me to close OBS?", "Are you sure?", MessageBoxButtons.YesNo)  == DialogResult.Yes)
@@ -202,7 +215,7 @@ namespace win_capture_audio_installer.Classes
                 MAIN.UpdateStatus($"Installing version: {latestVersion.tag}!");
                 ZipFile.ExtractToDirectory(file, obsLoc);
 
-                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\64bit\win-capture-audio-version.txt"), latestVersion.tag);
+                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\{{ARCHBIT}}\win-capture-audio-version.txt".FormatArch()), latestVersion.tag);
                 MAIN.UpdateStatus($"Installed version: {latestVersion.tag}!");
 
                 Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
@@ -211,12 +224,12 @@ namespace win_capture_audio_installer.Classes
                 if (File.Exists(file))
                     File.Delete(file);
 
-                string obsBinPath = Path.Combine(obsLoc, @"bin\64bit\");
-                if (File.Exists(obsBinPath + "obs64.exe"))
+                string obsBinPath = Path.Combine(obsLoc, @"bin\{{ARCHBIT}}\".FormatArch());
+                if (File.Exists(obsBinPath + "obs{{ARCH}}.exe".FormatArch()))
                 {
                     if (MessageBox.Show(MAIN, "Would you like me to open OBS?", "Are you sure?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        Powershell.Invoke($"cd \"{obsBinPath}\"", "start obs64.exe");
+                        Powershell.Invoke($"cd \"{obsBinPath}\"", "start obs{{ARCH}}.exe".FormatArch());
                     }
                 }
             }

@@ -13,6 +13,7 @@ using win_capture_audio_installer.Classes;
 using win_capture_audio_installer.Classes.Structs;
 using win_capture_audio_installer.Information;
 using WK.Libraries.BetterFolderBrowserNS;
+using System.Linq;
 
 namespace win_capture_audio_installer
 {
@@ -92,6 +93,8 @@ namespace win_capture_audio_installer
                     versionSelector.Items.Add("Loading...");
                 }));
 
+                List<string> failedToAdd = new List<string>();
+
                 try
                 {
                     foreach (GithubRelease.Root release in latestVersions)
@@ -112,12 +115,9 @@ namespace win_capture_audio_installer
                                                 if (versionSelector.Items.Contains("Loading...")) versionSelector.Items.Remove("Loading...");
                                                 versionSelector.Items.Add(release.TagName);
                                             }));
-                                            UpdateStatus($"Found version {release.TagName}");
-
                                         }
                                         catch (Exception e)
                                         {
-                                            UpdateStatus($"Failed to add: {release.TagName}");
                                             dLogger.Log("Failed to add: " + release.TagName, LogLevel.Error);
                                             dLogger.Log(e);
                                         }
@@ -132,7 +132,10 @@ namespace win_capture_audio_installer
                         versionSelector.SelectedIndex = 0;
                     }));
 
-                    UpdateStatus("Finished retriving plugin versions...");
+                    if (failedToAdd.Count > 0)
+                        UpdateStatus("Failed to add: " + String.Join(", ", failedToAdd));
+                    else
+                        UpdateStatus("Finished retriving plugin versions...");
                 }
 
                 catch (Exception e)
@@ -322,8 +325,14 @@ namespace win_capture_audio_installer
             }
 
             await CaptureAudio.Install(versionSelector.GetItemText(versionSelector.SelectedItem));
+            bool isInstalled = CaptureAudio.IsInstalled();
+
             installButton.Enabled = true;
             uninstallButton.Enabled = true;
+            installButton.Text = isInstalled ? "Reinstall" : "Install";
+            uninstallButton.Visible = isInstalled;
+
+            ControlManager.Home();
         }
 
         private void obsInstallLocationSelector_Click(object sender, EventArgs e)
@@ -384,14 +393,15 @@ namespace win_capture_audio_installer
 
         private async void UninstallButton_Click(object sender, EventArgs e)
         {
-            installButton.Enabled = false;
-            uninstallButton.Enabled = false;
-
             UpdateStatus("Uninstalling the plugin...");
             await CaptureAudio.Uninstall();
 
-            installButton.Enabled = true;
-            uninstallButton.Enabled = true;
+            bool isInstalled = CaptureAudio.IsInstalled();
+
+            installButton.Text = isInstalled ? "Reinstall" : "Install";
+            uninstallButton.Visible = isInstalled;
+
+            ControlManager.Home();
         }
 
         private void helpVideoButton_Click(object sender, EventArgs e)

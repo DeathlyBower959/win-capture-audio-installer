@@ -37,15 +37,15 @@ namespace win_capture_audio_installer.Information
         public static bool IsOBSFolder(string path)
         {
             string[] required = new string[] {
-                "bin\\{{WINBIT}}bit",
-                "bin\\{{WINBIT}}bit\\obs{{WINBIT}}.exe",
+                "bin\\{{ARCHBIT}}",
+                "bin\\{{ARCHBIT}}\\obs{{ARCH}}.exe",
                 "data",
                 "obs-plugins"
             };
 
             foreach (string i in required)
             {
-                if (!Directory.Exists(Path.Combine(path, i)) && !File.Exists(Path.Combine(path, i.Replace("{{WINBIT}}", Environment.Is64BitOperatingSystem ? "64": "32")))) return false;
+                if (!Directory.Exists(Path.Combine(path, i)) && !File.Exists(Path.Combine(path, i.FormatArch()))) return false;
             }
 
             return true;
@@ -163,16 +163,21 @@ namespace win_capture_audio_installer.Information
         {
             string obsInstallLoc = FindOBSInstallLoc();
 
-            var versionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(obsInstallLoc, @"bin\64bit\obs64.exe"));
+            var versionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(obsInstallLoc, @"bin\{{ARCHBIT}}\obs{{ARCH}}.exe".FormatArch()));
             string version = versionInfo.FileVersion;
+            
+            string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            
             if (version != null)
             {
-                string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 currentText[1] = $"OBS: {version}";
                 MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
 
                 return new Version(version);
             }
+
+            currentText[1] = $"OBS: ?";
+            MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
 
             return null;
         }

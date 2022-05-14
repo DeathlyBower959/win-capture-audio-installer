@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("win-capture-audio-installer")]
 [assembly: AssemblyDescription("The installer for win-capture-audio plugin by bozbez!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP Inc.")]
+[assembly: AssemblyCompany("DeathlyBower959")]
 [assembly: AssemblyProduct("win-capture-audio-installer")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2022")]
 [assembly: AssemblyTrademark("")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.4")]
+[assembly: AssemblyFileVersion("1.0.4")]

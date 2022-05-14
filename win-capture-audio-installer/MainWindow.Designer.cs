@@ -65,6 +65,8 @@ namespace win_capture_audio_installer
             this.settingsPageLabel = new System.Windows.Forms.Label();
             this.horizontalRule = new System.Windows.Forms.Panel();
             this.scrollTimer = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.installerBuildLabel = new System.Windows.Forms.Label();
             this.sideBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.homeButtonIcon)).BeginInit();
@@ -154,6 +156,7 @@ namespace win_capture_audio_installer
             // sideBar
             // 
             this.sideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.sideBar.Controls.Add(this.panel1);
             this.sideBar.Controls.Add(this.versions);
             this.sideBar.Controls.Add(this.homeButton);
             this.sideBar.Controls.Add(this.faqButton);
@@ -173,13 +176,13 @@ namespace win_capture_audio_installer
             // versions
             // 
             this.versions.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.versions.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.versions.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.versions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.versions.Location = new System.Drawing.Point(0, 361);
+            this.versions.Location = new System.Drawing.Point(0, 347);
             this.versions.Name = "versions";
-            this.versions.Size = new System.Drawing.Size(167, 48);
+            this.versions.Size = new System.Drawing.Size(167, 62);
             this.versions.TabIndex = 87;
-            this.versions.Text = "Windows: ?\r\nOBS: ?";
+            this.versions.Text = "Windows: ?\r\nOBS: ?\r\nPlugin: ?";
             this.versions.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // homeButton
@@ -198,10 +201,10 @@ namespace win_capture_audio_installer
             this.homeButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.homeButton.ForeColor = System.Drawing.Color.White;
             this.homeButton.HoverState.Parent = this.homeButton;
-            this.homeButton.Location = new System.Drawing.Point(0, 167);
+            this.homeButton.Location = new System.Drawing.Point(0, 163);
             this.homeButton.Name = "homeButton";
             this.homeButton.ShadowDecoration.Parent = this.homeButton;
-            this.homeButton.Size = new System.Drawing.Size(167, 52);
+            this.homeButton.Size = new System.Drawing.Size(167, 48);
             this.homeButton.TabIndex = 18;
             this.homeButton.Text = "Home";
             this.homeButton.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -225,10 +228,10 @@ namespace win_capture_audio_installer
             this.faqButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.faqButton.ForeColor = System.Drawing.Color.White;
             this.faqButton.HoverState.Parent = this.faqButton;
-            this.faqButton.Location = new System.Drawing.Point(0, 230);
+            this.faqButton.Location = new System.Drawing.Point(0, 220);
             this.faqButton.Name = "faqButton";
             this.faqButton.ShadowDecoration.Parent = this.faqButton;
-            this.faqButton.Size = new System.Drawing.Size(167, 52);
+            this.faqButton.Size = new System.Drawing.Size(167, 48);
             this.faqButton.TabIndex = 16;
             this.faqButton.TabStop = false;
             this.faqButton.Text = "FAQ";
@@ -253,10 +256,10 @@ namespace win_capture_audio_installer
             this.settingsButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.settingsButton.ForeColor = System.Drawing.Color.White;
             this.settingsButton.HoverState.Parent = this.settingsButton;
-            this.settingsButton.Location = new System.Drawing.Point(0, 289);
+            this.settingsButton.Location = new System.Drawing.Point(0, 279);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.ShadowDecoration.Parent = this.settingsButton;
-            this.settingsButton.Size = new System.Drawing.Size(167, 52);
+            this.settingsButton.Size = new System.Drawing.Size(167, 48);
             this.settingsButton.TabIndex = 13;
             this.settingsButton.TabStop = false;
             this.settingsButton.Text = "Settings";
@@ -304,10 +307,10 @@ namespace win_capture_audio_installer
             this.homeButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Home;
             this.homeButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.homeButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.homeButtonIcon.IconSize = 48;
-            this.homeButtonIcon.Location = new System.Drawing.Point(12, 171);
+            this.homeButtonIcon.IconSize = 44;
+            this.homeButtonIcon.Location = new System.Drawing.Point(14, 168);
             this.homeButtonIcon.Name = "homeButtonIcon";
-            this.homeButtonIcon.Size = new System.Drawing.Size(48, 48);
+            this.homeButtonIcon.Size = new System.Drawing.Size(44, 44);
             this.homeButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.homeButtonIcon.TabIndex = 19;
             this.homeButtonIcon.TabStop = false;
@@ -319,10 +322,10 @@ namespace win_capture_audio_installer
             this.faqButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Lightbulb;
             this.faqButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.faqButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.faqButtonIcon.IconSize = 48;
-            this.faqButtonIcon.Location = new System.Drawing.Point(12, 236);
+            this.faqButtonIcon.IconSize = 44;
+            this.faqButtonIcon.Location = new System.Drawing.Point(14, 227);
             this.faqButtonIcon.Name = "faqButtonIcon";
-            this.faqButtonIcon.Size = new System.Drawing.Size(48, 48);
+            this.faqButtonIcon.Size = new System.Drawing.Size(44, 44);
             this.faqButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.faqButtonIcon.TabIndex = 17;
             this.faqButtonIcon.TabStop = false;
@@ -334,10 +337,10 @@ namespace win_capture_audio_installer
             this.settingsButtonIcon.IconChar = FontAwesome.Sharp.IconChar.Cog;
             this.settingsButtonIcon.IconColor = System.Drawing.Color.RoyalBlue;
             this.settingsButtonIcon.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.settingsButtonIcon.IconSize = 48;
-            this.settingsButtonIcon.Location = new System.Drawing.Point(12, 295);
+            this.settingsButtonIcon.IconSize = 44;
+            this.settingsButtonIcon.Location = new System.Drawing.Point(14, 286);
             this.settingsButtonIcon.Name = "settingsButtonIcon";
-            this.settingsButtonIcon.Size = new System.Drawing.Size(48, 48);
+            this.settingsButtonIcon.Size = new System.Drawing.Size(44, 44);
             this.settingsButtonIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.settingsButtonIcon.TabIndex = 14;
             this.settingsButtonIcon.TabStop = false;
@@ -401,7 +404,7 @@ namespace win_capture_audio_installer
             this.homePage.TabIndex = 1;
             this.homePage.Text = "homePage";
             // 
-            // UninstallButton
+            // uninstallButton
             // 
             this.uninstallButton.Animated = true;
             this.uninstallButton.AutoRoundedCorners = true;
@@ -420,7 +423,7 @@ namespace win_capture_audio_installer
             this.uninstallButton.ForeColor = System.Drawing.Color.White;
             this.uninstallButton.HoverState.Parent = this.uninstallButton;
             this.uninstallButton.Location = new System.Drawing.Point(455, 324);
-            this.uninstallButton.Name = "UninstallButton";
+            this.uninstallButton.Name = "uninstallButton";
             this.uninstallButton.ShadowDecoration.Parent = this.uninstallButton;
             this.uninstallButton.Size = new System.Drawing.Size(109, 32);
             this.uninstallButton.TabIndex = 87;
@@ -457,6 +460,7 @@ namespace win_capture_audio_installer
             // 
             // statusText
             // 
+            this.statusText.BackColor = System.Drawing.Color.Transparent;
             this.statusText.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.statusText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -587,6 +591,7 @@ namespace win_capture_audio_installer
             // settingsPage
             // 
             this.settingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.settingsPage.Controls.Add(this.installerBuildLabel);
             this.settingsPage.Controls.Add(this.obsInstallLocationSelector);
             this.settingsPage.Controls.Add(this.obsInstallLocLabel);
             this.settingsPage.Controls.Add(this.settingsPageLabel);
@@ -650,9 +655,9 @@ namespace win_capture_audio_installer
             // horizontalRule
             // 
             this.horizontalRule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.horizontalRule.Location = new System.Drawing.Point(151, 46);
+            this.horizontalRule.Location = new System.Drawing.Point(167, 46);
             this.horizontalRule.Name = "horizontalRule";
-            this.horizontalRule.Size = new System.Drawing.Size(595, 1);
+            this.horizontalRule.Size = new System.Drawing.Size(579, 1);
             this.horizontalRule.TabIndex = 11;
             // 
             // scrollTimer
@@ -660,6 +665,27 @@ namespace win_capture_audio_installer
             this.scrollTimer.Enabled = true;
             this.scrollTimer.Interval = 1;
             this.scrollTimer.Tick += new System.EventHandler(this.scrollTimer_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.panel1.Location = new System.Drawing.Point(0, 339);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(178, 1);
+            this.panel1.TabIndex = 12;
+            // 
+            // installerBuildLabel
+            // 
+            this.installerBuildLabel.BackColor = System.Drawing.Color.Transparent;
+            this.installerBuildLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.installerBuildLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.installerBuildLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.installerBuildLabel.Location = new System.Drawing.Point(0, 339);
+            this.installerBuildLabel.Name = "installerBuildLabel";
+            this.installerBuildLabel.Size = new System.Drawing.Size(567, 25);
+            this.installerBuildLabel.TabIndex = 97;
+            this.installerBuildLabel.Text = "Build: ?";
+            this.installerBuildLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // MainWindow
             // 
@@ -720,7 +746,6 @@ namespace win_capture_audio_installer
         public System.Windows.Forms.Label settingsPageLabel;
         private System.Windows.Forms.Panel horizontalRule;
         public System.Windows.Forms.RichTextBox faqText;
-        private Guna.UI2.WinForms.Guna2Button installButton;
         private System.Windows.Forms.Label statusText;
         public Guna.UI2.WinForms.Guna2ComboBox versionSelector;
         public System.Windows.Forms.Label versions;
@@ -730,7 +755,10 @@ namespace win_capture_audio_installer
         private Guna.UI2.WinForms.Guna2VScrollBar faqScrollBar;
         private System.Windows.Forms.Timer scrollTimer;
         private System.Windows.Forms.Label appTitle;
-        private Guna.UI2.WinForms.Guna2Button uninstallButton;
         private Guna.UI2.WinForms.Guna2Button helpVideoButton;
+        public Guna.UI2.WinForms.Guna2Button installButton;
+        public Guna.UI2.WinForms.Guna2Button uninstallButton;
+        private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.Label installerBuildLabel;
     }
 }
