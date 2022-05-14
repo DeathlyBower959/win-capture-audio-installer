@@ -17,6 +17,24 @@ namespace win_capture_audio_installer.Classes
         /// </summary>
         public static async Task Uninstall()
         {
+            Process[] obsInstances = Process.GetProcessesByName("obs{{ARCH}}".FormatArch());
+            if (obsInstances.Length > 0)
+            {
+                if (MessageBox.Show(MAIN, "Would you like me to close OBS?", "Are you sure?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    foreach (var process in obsInstances)
+                    {
+                        process.Kill();
+                        process.WaitForExit();
+                    }
+                }
+                else
+                {
+                    MAIN.dLogger.Log("Canceled uninstalling version, OBS was open...");
+                    return;
+                }
+            }
+
             string obsLoc = OBS.FindOBSInstallLoc();
 
             if (!Directory.Exists(obsLoc))
@@ -24,7 +42,6 @@ namespace win_capture_audio_installer.Classes
                 MAIN.dLogger.Log("Failed to uninstall: OBS Location Not Found", LogLevel.Error);
                 /*Notify.Toast("Uninstall Plugin", "I failed to uninstall the plugin!");*/
                 return;
-
             }
 
             if (File.Exists(Path.Combine(obsLoc, "obs-plugins\\{{ARCHBIT}}\\win-capture-audio.dll".FormatArch())))

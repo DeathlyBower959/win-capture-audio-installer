@@ -41,6 +41,7 @@ namespace win_capture_audio_installer.Information
             RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
             RegistryKey regKey = lm.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
 
+            string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             try
             {
                 if (regKey.GetValue("CurrentBuild") != null)
@@ -48,7 +49,6 @@ namespace win_capture_audio_installer.Information
                     string version = regKey.GetValue("CurrentBuild").ToString();
                     MAIN.dLogger.Log("Current Build: " + version, LogLevel.Success);
 
-                    string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     currentText[0] = $"Windows: {version}";
                     MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
 
@@ -57,6 +57,9 @@ namespace win_capture_audio_installer.Information
             }
             catch (Exception e)
             {
+                currentText[0] = $"Windows: ?";
+                MAIN.versions.Text = string.Join(Environment.NewLine, currentText);
+
                 MAIN.dLogger.Log("Failed to find Current Windows Build Version", LogLevel.Error);
                 MAIN.dLogger.Log(e);
             }

@@ -34,6 +34,7 @@ namespace win_capture_audio_installer.Information
 
             return true;
         }
+
         public static bool IsOBSFolder(string path)
         {
             string[] required = new string[] {
