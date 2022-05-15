@@ -38,7 +38,7 @@ namespace win_capture_audio_installer.Information
         {
             MAIN.dLogger.Log("Searching Windows NT for Current Windows Build Version");
 
-            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
             RegistryKey regKey = lm.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
 
             string[] currentText = MAIN.versions.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
@@ -74,7 +74,7 @@ namespace win_capture_audio_installer.Information
         {
             MAIN.dLogger.Log("Searching Windows NT for Windows Version");
 
-            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
             RegistryKey regKey = lm.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
 
             try

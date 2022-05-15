@@ -13,7 +13,6 @@ using win_capture_audio_installer.Classes;
 using win_capture_audio_installer.Classes.Structs;
 using win_capture_audio_installer.Information;
 using WK.Libraries.BetterFolderBrowserNS;
-using System.Linq;
 
 namespace win_capture_audio_installer
 {
@@ -35,11 +34,15 @@ namespace win_capture_audio_installer
         public MainWindow()
         {
             INSTANCE = this;
+            CheckForIllegalCrossThreadCalls = false;
 
             InitializeComponent();
 
             ControlManager.Home();
             DownloadRequiredFiles();
+
+            if (!Environment.Is64BitProcess)
+                Notify.Toast("Windows Architecture", "It seems that you are running x32, but this plugin does not support that architecture!");
         }
 
         public List<PluginVersion> versionsList = new List<PluginVersion>();
@@ -51,10 +54,6 @@ namespace win_capture_audio_installer
                 UpdateStatus("Getting latest plugin versions...", false);
                 List<GithubRelease.Root> latestVersions = Web.GetReleases();
 
-#if DEBUG
-                File.Copy("../../../Resources/FAQ.rtf", @"C:\temp\win-capture-audio-installer\Data\FAQ.rtf", true);
-                File.Copy("../../../Resources/required.txt", @"C:\temp\win-capture-audio-installer\Data\required.txt", true);
-#else
                 await DownloadManager.DownloadAsync(
                "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/FAQ.rtf",
                @"C:\temp\win-capture-audio-installer\Data",
@@ -64,7 +63,6 @@ namespace win_capture_audio_installer
                 "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/required.txt",
                 @"C:\temp\win-capture-audio-installer\Data",
                 "required.txt");
-#endif
 
 
 
@@ -217,26 +215,26 @@ namespace win_capture_audio_installer
 
         private void homeButton_Click(object sender, EventArgs e)
         {
+            ControlManager.Home();
             if (tabControl.SelectedTab == homePage) return;
 
             tabControl.SelectedTab = homePage;
-            ControlManager.Home();
         }
 
         private void faqButton_Click(object sender, EventArgs e)
         {
+            ControlManager.FAQ();
             if (tabControl.SelectedTab == faqPage) return;
 
             tabControl.SelectedTab = faqPage;
-            ControlManager.FAQ();
         }
 
         private void settingsButton_Click(object sender, EventArgs e)
         {
+            ControlManager.Settings();
             if (tabControl.SelectedTab == settingsPage) return;
 
             tabControl.SelectedTab = settingsPage;
-            ControlManager.Settings();
         }
 
 
@@ -264,16 +262,16 @@ namespace win_capture_audio_installer
         /// </summary>
         public enum StatusAnimationType
         {
-            RTL,
-            DoubleEdge,
-            Center
+            RTL = 15,
+            DoubleEdge = 35,
+            Center = 15
         }
 
         public async void ClearStatus(CancellationToken cancelToken = default(CancellationToken))
         {
             int delay = 3000;
-            int textDelay = 35;
             StatusAnimationType animationType = StatusAnimationType.DoubleEdge;
+            int textDelay = 15;
 
             await Task.Delay(delay);
             statusText.Invoke(new Action(async () =>
@@ -335,23 +333,27 @@ namespace win_capture_audio_installer
             ControlManager.Home();
         }
 
-        private void obsInstallLocationSelector_Click(object sender, EventArgs e)
+        private void obsInstallMethodSelector_SelectionChangeCommitted(object s, EventArgs e)
         {
-            if (Properties.Settings.Default.OBSInstall == "auto")
+            Guna2ComboBox sender = s as Guna2ComboBox;
+
+            /* CUSTOM */
+            if (sender.SelectedItem.ToString().ToLower() == "custom")
             {
                 BetterFolderBrowser obsLoc = new BetterFolderBrowser
                 {
-                    Title = "Choose your OBS install location!",
+                    Title = "Choose your OBS install location (Root folder)!",
                     RootFolder = @"C:\Program Files",
                     Multiselect = false
                 };
 
                 if (obsLoc.ShowDialog() == DialogResult.OK)
                 {
-                    if (OBS.IsOBSFolder(obsLoc.SelectedFolder))
+                    string formattedOBSFolder = OBS.FormatFolder(obsLoc.SelectedFolder);
+                    if (OBS.IsOBSFolder(formattedOBSFolder))
                     {
-                        Properties.Settings.Default.OBSInstall = obsLoc.SelectedFolder;
-                        Notify.Toast("OBS Location", "Succesfully changed OBS install location to:\n" + obsLoc.SelectedFolder, 2);
+                        Properties.Settings.Default.OBSInstall = formattedOBSFolder;
+                        Notify.Toast("OBS Location", "Succesfully changed OBS install location to:\n" + formattedOBSFolder, 2);
                     }
                     else
                     {
@@ -361,13 +363,11 @@ namespace win_capture_audio_installer
             }
             else
             {
-                Properties.Settings.Default.OBSInstall = "auto";
-                Notify.Toast("OBS Install", "The install location of OBS Studio as to been set to automatically detect!", 2);
+                Properties.Settings.Default.OBSInstall = sender.SelectedItem.ToString().ToLower();
             }
 
-            ((Guna2Button)sender).Checked = Properties.Settings.Default.OBSInstall == "auto" ? false : true;
-
-
+            ControlManager.Home();
+            ControlManager.Settings();
         }
 
         private void versionSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -408,5 +408,6 @@ namespace win_capture_audio_installer
         {
             Process.Start("https://www.youtube.com/watch?v=a_gYy27eTTw");
         }
+
     }
 }

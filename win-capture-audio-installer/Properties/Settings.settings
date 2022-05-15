@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="OBSInstall" Type="System.String" Scope="User">
-      <Value Profile="(Default)">auto</Value>
+      <Value Profile="(Default)">windows</Value>
     </Setting>
   </Settings>
 </SettingsFile>

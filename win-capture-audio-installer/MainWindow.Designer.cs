@@ -37,6 +37,7 @@ namespace win_capture_audio_installer
             this.closeButton = new Guna.UI2.WinForms.Guna2Button();
             this.fadeOut = new System.Windows.Forms.Timer(this.components);
             this.sideBar = new Guna.UI2.WinForms.Guna2Panel();
+            this.sidebarHorizontalRule = new System.Windows.Forms.Panel();
             this.versions = new System.Windows.Forms.Label();
             this.homeButton = new Guna.UI2.WinForms.Guna2Button();
             this.faqButton = new Guna.UI2.WinForms.Guna2Button();
@@ -60,13 +61,12 @@ namespace win_capture_audio_installer
             this.faqText = new System.Windows.Forms.RichTextBox();
             this.faqPageLabel = new System.Windows.Forms.Label();
             this.settingsPage = new System.Windows.Forms.TabPage();
-            this.obsInstallLocationSelector = new Guna.UI2.WinForms.Guna2Button();
-            this.obsInstallLocLabel = new System.Windows.Forms.Label();
+            this.obsInstallMethodLabel = new System.Windows.Forms.Label();
+            this.obsInstallMethodSelector = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.installerBuildLabel = new System.Windows.Forms.Label();
             this.settingsPageLabel = new System.Windows.Forms.Label();
             this.horizontalRule = new System.Windows.Forms.Panel();
             this.scrollTimer = new System.Windows.Forms.Timer(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.installerBuildLabel = new System.Windows.Forms.Label();
             this.sideBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.homeButtonIcon)).BeginInit();
@@ -156,7 +156,7 @@ namespace win_capture_audio_installer
             // sideBar
             // 
             this.sideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.sideBar.Controls.Add(this.panel1);
+            this.sideBar.Controls.Add(this.sidebarHorizontalRule);
             this.sideBar.Controls.Add(this.versions);
             this.sideBar.Controls.Add(this.homeButton);
             this.sideBar.Controls.Add(this.faqButton);
@@ -172,6 +172,14 @@ namespace win_capture_audio_installer
             this.sideBar.ShadowDecoration.Parent = this.sideBar;
             this.sideBar.Size = new System.Drawing.Size(167, 409);
             this.sideBar.TabIndex = 9;
+            // 
+            // sidebarHorizontalRule
+            // 
+            this.sidebarHorizontalRule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.sidebarHorizontalRule.Location = new System.Drawing.Point(0, 339);
+            this.sidebarHorizontalRule.Name = "sidebarHorizontalRule";
+            this.sidebarHorizontalRule.Size = new System.Drawing.Size(178, 1);
+            this.sidebarHorizontalRule.TabIndex = 12;
             // 
             // versions
             // 
@@ -422,7 +430,7 @@ namespace win_capture_audio_installer
             this.uninstallButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.uninstallButton.ForeColor = System.Drawing.Color.White;
             this.uninstallButton.HoverState.Parent = this.uninstallButton;
-            this.uninstallButton.Location = new System.Drawing.Point(455, 324);
+            this.uninstallButton.Location = new System.Drawing.Point(453, 325);
             this.uninstallButton.Name = "uninstallButton";
             this.uninstallButton.ShadowDecoration.Parent = this.uninstallButton;
             this.uninstallButton.Size = new System.Drawing.Size(109, 32);
@@ -450,7 +458,7 @@ namespace win_capture_audio_installer
             this.versionSelector.Items.AddRange(new object[] {
             "Loading..."});
             this.versionSelector.ItemsAppearance.Parent = this.versionSelector;
-            this.versionSelector.Location = new System.Drawing.Point(221, 183);
+            this.versionSelector.Location = new System.Drawing.Point(212, 192);
             this.versionSelector.Name = "versionSelector";
             this.versionSelector.ShadowDecoration.Parent = this.versionSelector;
             this.versionSelector.Size = new System.Drawing.Size(141, 33);
@@ -488,7 +496,7 @@ namespace win_capture_audio_installer
             this.installButton.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.installButton.ForeColor = System.Drawing.Color.White;
             this.installButton.HoverState.Parent = this.installButton;
-            this.installButton.Location = new System.Drawing.Point(192, 132);
+            this.installButton.Location = new System.Drawing.Point(183, 141);
             this.installButton.Name = "installButton";
             this.installButton.ShadowDecoration.Parent = this.installButton;
             this.installButton.Size = new System.Drawing.Size(200, 45);
@@ -591,53 +599,67 @@ namespace win_capture_audio_installer
             // settingsPage
             // 
             this.settingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.settingsPage.Controls.Add(this.obsInstallMethodLabel);
+            this.settingsPage.Controls.Add(this.obsInstallMethodSelector);
             this.settingsPage.Controls.Add(this.installerBuildLabel);
-            this.settingsPage.Controls.Add(this.obsInstallLocationSelector);
-            this.settingsPage.Controls.Add(this.obsInstallLocLabel);
             this.settingsPage.Controls.Add(this.settingsPageLabel);
             this.settingsPage.Location = new System.Drawing.Point(5, 4);
             this.settingsPage.Name = "settingsPage";
             this.settingsPage.Size = new System.Drawing.Size(567, 364);
             this.settingsPage.TabIndex = 4;
             // 
-            // obsInstallLocationSelector
+            // obsInstallMethodLabel
             // 
-            this.obsInstallLocationSelector.Animated = true;
-            this.obsInstallLocationSelector.AutoRoundedCorners = true;
-            this.obsInstallLocationSelector.BackColor = System.Drawing.Color.Transparent;
-            this.obsInstallLocationSelector.BorderRadius = 13;
-            this.obsInstallLocationSelector.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            this.obsInstallLocationSelector.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(6)))), ((int)(((byte)(184)))));
-            this.obsInstallLocationSelector.CheckedState.Parent = this.obsInstallLocationSelector;
-            this.obsInstallLocationSelector.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.obsInstallLocationSelector.CustomImages.Parent = this.obsInstallLocationSelector;
-            this.obsInstallLocationSelector.DisabledState.Parent = this.obsInstallLocationSelector;
-            this.obsInstallLocationSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.obsInstallLocationSelector.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.obsInstallLocationSelector.ForeColor = System.Drawing.Color.White;
-            this.obsInstallLocationSelector.HoverState.Parent = this.obsInstallLocationSelector;
-            this.obsInstallLocationSelector.Location = new System.Drawing.Point(213, 182);
-            this.obsInstallLocationSelector.Name = "obsInstallLocationSelector";
-            this.obsInstallLocationSelector.ShadowDecoration.Parent = this.obsInstallLocationSelector;
-            this.obsInstallLocationSelector.Size = new System.Drawing.Size(141, 29);
-            this.obsInstallLocationSelector.TabIndex = 96;
-            this.obsInstallLocationSelector.TabStop = false;
-            this.obsInstallLocationSelector.Text = "Choose Location";
-            this.obsInstallLocationSelector.UseTransparentBackground = true;
-            this.obsInstallLocationSelector.Click += new System.EventHandler(this.obsInstallLocationSelector_Click);
+            this.obsInstallMethodLabel.AutoSize = true;
+            this.obsInstallMethodLabel.BackColor = System.Drawing.Color.Transparent;
+            this.obsInstallMethodLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.obsInstallMethodLabel.ForeColor = System.Drawing.Color.White;
+            this.obsInstallMethodLabel.Location = new System.Drawing.Point(217, 158);
+            this.obsInstallMethodLabel.Name = "obsInstallMethodLabel";
+            this.obsInstallMethodLabel.Size = new System.Drawing.Size(131, 25);
+            this.obsInstallMethodLabel.TabIndex = 99;
+            this.obsInstallMethodLabel.Text = "OBS Location";
+            this.obsInstallMethodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // obsInstallLocLabel
+            // obsInstallMethodSelector
             // 
-            this.obsInstallLocLabel.AutoSize = true;
-            this.obsInstallLocLabel.BackColor = System.Drawing.Color.Transparent;
-            this.obsInstallLocLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.obsInstallLocLabel.ForeColor = System.Drawing.Color.White;
-            this.obsInstallLocLabel.Location = new System.Drawing.Point(190, 149);
-            this.obsInstallLocLabel.Name = "obsInstallLocLabel";
-            this.obsInstallLocLabel.Size = new System.Drawing.Size(189, 25);
-            this.obsInstallLocLabel.TabIndex = 95;
-            this.obsInstallLocLabel.Text = "OBS Install Location";
-            this.obsInstallLocLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.obsInstallMethodSelector.AutoRoundedCorners = true;
+            this.obsInstallMethodSelector.BackColor = System.Drawing.Color.Transparent;
+            this.obsInstallMethodSelector.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.obsInstallMethodSelector.BorderRadius = 17;
+            this.obsInstallMethodSelector.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.obsInstallMethodSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.obsInstallMethodSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.obsInstallMethodSelector.FocusedColor = System.Drawing.Color.Empty;
+            this.obsInstallMethodSelector.FocusedState.Parent = this.obsInstallMethodSelector;
+            this.obsInstallMethodSelector.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.obsInstallMethodSelector.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.obsInstallMethodSelector.HoverState.Parent = this.obsInstallMethodSelector;
+            this.obsInstallMethodSelector.ItemHeight = 30;
+            this.obsInstallMethodSelector.Items.AddRange(new object[] {
+            "Windows",
+            "Steam",
+            "Custom"});
+            this.obsInstallMethodSelector.ItemsAppearance.Parent = this.obsInstallMethodSelector;
+            this.obsInstallMethodSelector.Location = new System.Drawing.Point(213, 192);
+            this.obsInstallMethodSelector.Name = "obsInstallMethodSelector";
+            this.obsInstallMethodSelector.ShadowDecoration.Parent = this.obsInstallMethodSelector;
+            this.obsInstallMethodSelector.Size = new System.Drawing.Size(140, 36);
+            this.obsInstallMethodSelector.TabIndex = 98;
+            this.obsInstallMethodSelector.SelectionChangeCommitted += new System.EventHandler(this.obsInstallMethodSelector_SelectionChangeCommitted);
+            // 
+            // installerBuildLabel
+            // 
+            this.installerBuildLabel.BackColor = System.Drawing.Color.Transparent;
+            this.installerBuildLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.installerBuildLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.installerBuildLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.installerBuildLabel.Location = new System.Drawing.Point(0, 339);
+            this.installerBuildLabel.Name = "installerBuildLabel";
+            this.installerBuildLabel.Size = new System.Drawing.Size(567, 25);
+            this.installerBuildLabel.TabIndex = 97;
+            this.installerBuildLabel.Text = "Build: ?";
+            this.installerBuildLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // settingsPageLabel
             // 
@@ -666,27 +688,6 @@ namespace win_capture_audio_installer
             this.scrollTimer.Interval = 1;
             this.scrollTimer.Tick += new System.EventHandler(this.scrollTimer_Tick);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.panel1.Location = new System.Drawing.Point(0, 339);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(178, 1);
-            this.panel1.TabIndex = 12;
-            // 
-            // installerBuildLabel
-            // 
-            this.installerBuildLabel.BackColor = System.Drawing.Color.Transparent;
-            this.installerBuildLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.installerBuildLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.installerBuildLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.installerBuildLabel.Location = new System.Drawing.Point(0, 339);
-            this.installerBuildLabel.Name = "installerBuildLabel";
-            this.installerBuildLabel.Size = new System.Drawing.Size(567, 25);
-            this.installerBuildLabel.TabIndex = 97;
-            this.installerBuildLabel.Text = "Build: ?";
-            this.installerBuildLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -706,7 +707,7 @@ namespace win_capture_audio_installer
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainWindow";
+            this.Text = "win-capture-audio-installer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.sideBar.ResumeLayout(false);
             this.sideBar.PerformLayout();
@@ -749,8 +750,6 @@ namespace win_capture_audio_installer
         private System.Windows.Forms.Label statusText;
         public Guna.UI2.WinForms.Guna2ComboBox versionSelector;
         public System.Windows.Forms.Label versions;
-        public Guna.UI2.WinForms.Guna2Button obsInstallLocationSelector;
-        public System.Windows.Forms.Label obsInstallLocLabel;
         public System.Windows.Forms.TabPage settingsPage;
         private Guna.UI2.WinForms.Guna2VScrollBar faqScrollBar;
         private System.Windows.Forms.Timer scrollTimer;
@@ -758,7 +757,9 @@ namespace win_capture_audio_installer
         private Guna.UI2.WinForms.Guna2Button helpVideoButton;
         public Guna.UI2.WinForms.Guna2Button installButton;
         public Guna.UI2.WinForms.Guna2Button uninstallButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel sidebarHorizontalRule;
         public System.Windows.Forms.Label installerBuildLabel;
+        public System.Windows.Forms.Label obsInstallMethodLabel;
+        public Guna.UI2.WinForms.Guna2ComboBox obsInstallMethodSelector;
     }
 }
