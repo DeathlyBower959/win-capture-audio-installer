@@ -41,7 +41,7 @@ namespace win_capture_audio_installer
             ControlManager.Home();
             DownloadRequiredFiles();
 
-            if (!Environment.Is64BitProcess)
+            if (!Environment.Is64BitOperatingSystem)
                 Notify.Toast("Windows Architecture", "It seems that you are running x32, but this plugin does not support that architecture!");
         }
 
