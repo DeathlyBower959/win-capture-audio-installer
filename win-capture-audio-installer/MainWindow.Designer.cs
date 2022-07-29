@@ -85,7 +85,6 @@ namespace win_capture_audio_installer
             this.dragBar.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.dragBar.Location = new System.Drawing.Point(0, 0);
             this.dragBar.Name = "dragBar";
-            this.dragBar.ShadowDecoration.Parent = this.dragBar;
             this.dragBar.Size = new System.Drawing.Size(743, 12);
             this.dragBar.TabIndex = 0;
             // 
@@ -99,21 +98,16 @@ namespace win_capture_audio_installer
             // 
             this.minimizeButton.Animated = true;
             this.minimizeButton.BackColor = System.Drawing.Color.Transparent;
-            this.minimizeButton.CheckedState.Parent = this.minimizeButton;
             this.minimizeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.minimizeButton.CustomImages.Parent = this.minimizeButton;
             this.minimizeButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.minimizeButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.minimizeButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.minimizeButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.minimizeButton.DisabledState.Parent = this.minimizeButton;
             this.minimizeButton.FillColor = System.Drawing.Color.Transparent;
             this.minimizeButton.Font = new System.Drawing.Font("Segoe UI Black", 18F, System.Drawing.FontStyle.Bold);
             this.minimizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.minimizeButton.HoverState.Parent = this.minimizeButton;
             this.minimizeButton.Location = new System.Drawing.Point(670, 10);
             this.minimizeButton.Name = "minimizeButton";
-            this.minimizeButton.ShadowDecoration.Parent = this.minimizeButton;
             this.minimizeButton.Size = new System.Drawing.Size(35, 38);
             this.minimizeButton.TabIndex = 8;
             this.minimizeButton.TabStop = false;
@@ -126,21 +120,16 @@ namespace win_capture_audio_installer
             // 
             this.closeButton.Animated = true;
             this.closeButton.BackColor = System.Drawing.Color.Transparent;
-            this.closeButton.CheckedState.Parent = this.closeButton;
             this.closeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.closeButton.CustomImages.Parent = this.closeButton;
             this.closeButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.closeButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.closeButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.closeButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.closeButton.DisabledState.Parent = this.closeButton;
             this.closeButton.FillColor = System.Drawing.Color.Transparent;
             this.closeButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.closeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.closeButton.HoverState.Parent = this.closeButton;
             this.closeButton.Location = new System.Drawing.Point(705, 13);
             this.closeButton.Name = "closeButton";
-            this.closeButton.ShadowDecoration.Parent = this.closeButton;
             this.closeButton.Size = new System.Drawing.Size(35, 35);
             this.closeButton.TabIndex = 7;
             this.closeButton.TabStop = false;
@@ -169,7 +158,6 @@ namespace win_capture_audio_installer
             this.sideBar.Dock = System.Windows.Forms.DockStyle.Left;
             this.sideBar.Location = new System.Drawing.Point(0, 12);
             this.sideBar.Name = "sideBar";
-            this.sideBar.ShadowDecoration.Parent = this.sideBar;
             this.sideBar.Size = new System.Drawing.Size(167, 409);
             this.sideBar.TabIndex = 9;
             // 
@@ -197,21 +185,16 @@ namespace win_capture_audio_installer
             // 
             this.homeButton.Animated = true;
             this.homeButton.BackColor = System.Drawing.Color.Transparent;
-            this.homeButton.CheckedState.Parent = this.homeButton;
             this.homeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.homeButton.CustomImages.Parent = this.homeButton;
             this.homeButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.homeButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.homeButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.homeButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.homeButton.DisabledState.Parent = this.homeButton;
             this.homeButton.FillColor = System.Drawing.Color.Transparent;
             this.homeButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.homeButton.ForeColor = System.Drawing.Color.White;
-            this.homeButton.HoverState.Parent = this.homeButton;
             this.homeButton.Location = new System.Drawing.Point(0, 163);
             this.homeButton.Name = "homeButton";
-            this.homeButton.ShadowDecoration.Parent = this.homeButton;
             this.homeButton.Size = new System.Drawing.Size(167, 48);
             this.homeButton.TabIndex = 18;
             this.homeButton.Text = "Home";
@@ -224,21 +207,16 @@ namespace win_capture_audio_installer
             // 
             this.faqButton.Animated = true;
             this.faqButton.BackColor = System.Drawing.Color.Transparent;
-            this.faqButton.CheckedState.Parent = this.faqButton;
             this.faqButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.faqButton.CustomImages.Parent = this.faqButton;
             this.faqButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.faqButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.faqButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.faqButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.faqButton.DisabledState.Parent = this.faqButton;
             this.faqButton.FillColor = System.Drawing.Color.Transparent;
             this.faqButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.faqButton.ForeColor = System.Drawing.Color.White;
-            this.faqButton.HoverState.Parent = this.faqButton;
             this.faqButton.Location = new System.Drawing.Point(0, 220);
             this.faqButton.Name = "faqButton";
-            this.faqButton.ShadowDecoration.Parent = this.faqButton;
             this.faqButton.Size = new System.Drawing.Size(167, 48);
             this.faqButton.TabIndex = 16;
             this.faqButton.TabStop = false;
@@ -252,21 +230,16 @@ namespace win_capture_audio_installer
             // 
             this.settingsButton.Animated = true;
             this.settingsButton.BackColor = System.Drawing.Color.Transparent;
-            this.settingsButton.CheckedState.Parent = this.settingsButton;
             this.settingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.settingsButton.CustomImages.Parent = this.settingsButton;
             this.settingsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.settingsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.settingsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.settingsButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.settingsButton.DisabledState.Parent = this.settingsButton;
             this.settingsButton.FillColor = System.Drawing.Color.Transparent;
             this.settingsButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.settingsButton.ForeColor = System.Drawing.Color.White;
-            this.settingsButton.HoverState.Parent = this.settingsButton;
             this.settingsButton.Location = new System.Drawing.Point(0, 279);
             this.settingsButton.Name = "settingsButton";
-            this.settingsButton.ShadowDecoration.Parent = this.settingsButton;
             this.settingsButton.Size = new System.Drawing.Size(167, 48);
             this.settingsButton.TabIndex = 13;
             this.settingsButton.TabStop = false;
@@ -301,7 +274,6 @@ namespace win_capture_audio_installer
             this.appLogo.ImageRotate = 0F;
             this.appLogo.Location = new System.Drawing.Point(0, 0);
             this.appLogo.Name = "appLogo";
-            this.appLogo.ShadowDecoration.Parent = this.appLogo;
             this.appLogo.Size = new System.Drawing.Size(167, 100);
             this.appLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.appLogo.TabIndex = 15;
@@ -418,21 +390,16 @@ namespace win_capture_audio_installer
             this.uninstallButton.AutoRoundedCorners = true;
             this.uninstallButton.BackColor = System.Drawing.Color.Transparent;
             this.uninstallButton.BorderRadius = 15;
-            this.uninstallButton.CheckedState.Parent = this.uninstallButton;
             this.uninstallButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.uninstallButton.CustomImages.Parent = this.uninstallButton;
             this.uninstallButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.uninstallButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.uninstallButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.uninstallButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.uninstallButton.DisabledState.Parent = this.uninstallButton;
             this.uninstallButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.uninstallButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.uninstallButton.ForeColor = System.Drawing.Color.White;
-            this.uninstallButton.HoverState.Parent = this.uninstallButton;
             this.uninstallButton.Location = new System.Drawing.Point(453, 325);
             this.uninstallButton.Name = "uninstallButton";
-            this.uninstallButton.ShadowDecoration.Parent = this.uninstallButton;
             this.uninstallButton.Size = new System.Drawing.Size(109, 32);
             this.uninstallButton.TabIndex = 87;
             this.uninstallButton.TabStop = false;
@@ -450,17 +417,13 @@ namespace win_capture_audio_installer
             this.versionSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.versionSelector.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.versionSelector.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.versionSelector.FocusedState.Parent = this.versionSelector;
             this.versionSelector.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.versionSelector.ForeColor = System.Drawing.Color.White;
-            this.versionSelector.HoverState.Parent = this.versionSelector;
             this.versionSelector.ItemHeight = 27;
             this.versionSelector.Items.AddRange(new object[] {
             "Loading..."});
-            this.versionSelector.ItemsAppearance.Parent = this.versionSelector;
             this.versionSelector.Location = new System.Drawing.Point(212, 192);
             this.versionSelector.Name = "versionSelector";
-            this.versionSelector.ShadowDecoration.Parent = this.versionSelector;
             this.versionSelector.Size = new System.Drawing.Size(141, 33);
             this.versionSelector.TabIndex = 86;
             this.versionSelector.TabStop = false;
@@ -484,21 +447,16 @@ namespace win_capture_audio_installer
             this.installButton.AutoRoundedCorners = true;
             this.installButton.BackColor = System.Drawing.Color.Transparent;
             this.installButton.BorderRadius = 21;
-            this.installButton.CheckedState.Parent = this.installButton;
             this.installButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.installButton.CustomImages.Parent = this.installButton;
             this.installButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.installButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.installButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.installButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.installButton.DisabledState.Parent = this.installButton;
             this.installButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.installButton.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.installButton.ForeColor = System.Drawing.Color.White;
-            this.installButton.HoverState.Parent = this.installButton;
             this.installButton.Location = new System.Drawing.Point(183, 141);
             this.installButton.Name = "installButton";
-            this.installButton.ShadowDecoration.Parent = this.installButton;
             this.installButton.Size = new System.Drawing.Size(200, 45);
             this.installButton.TabIndex = 1;
             this.installButton.TabStop = false;
@@ -525,21 +483,16 @@ namespace win_capture_audio_installer
             this.helpVideoButton.AutoRoundedCorners = true;
             this.helpVideoButton.BackColor = System.Drawing.Color.Transparent;
             this.helpVideoButton.BorderRadius = 15;
-            this.helpVideoButton.CheckedState.Parent = this.helpVideoButton;
             this.helpVideoButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.helpVideoButton.CustomImages.Parent = this.helpVideoButton;
             this.helpVideoButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.helpVideoButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.helpVideoButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.helpVideoButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.helpVideoButton.DisabledState.Parent = this.helpVideoButton;
             this.helpVideoButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.helpVideoButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.helpVideoButton.ForeColor = System.Drawing.Color.White;
-            this.helpVideoButton.HoverState.Parent = this.helpVideoButton;
             this.helpVideoButton.Location = new System.Drawing.Point(450, 16);
             this.helpVideoButton.Name = "helpVideoButton";
-            this.helpVideoButton.ShadowDecoration.Parent = this.helpVideoButton;
             this.helpVideoButton.Size = new System.Drawing.Size(109, 32);
             this.helpVideoButton.TabIndex = 97;
             this.helpVideoButton.TabStop = false;
@@ -553,12 +506,10 @@ namespace win_capture_audio_installer
             this.faqScrollBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.faqScrollBar.BorderRadius = 8;
             this.faqScrollBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.faqScrollBar.HoverState.Parent = null;
             this.faqScrollBar.InUpdate = false;
             this.faqScrollBar.LargeChange = 10;
             this.faqScrollBar.Location = new System.Drawing.Point(549, 64);
             this.faqScrollBar.Name = "faqScrollBar";
-            this.faqScrollBar.PressedState.Parent = this.faqScrollBar;
             this.faqScrollBar.ScrollbarSize = 18;
             this.faqScrollBar.Size = new System.Drawing.Size(18, 292);
             this.faqScrollBar.TabIndex = 96;
@@ -631,19 +582,15 @@ namespace win_capture_audio_installer
             this.obsInstallMethodSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.obsInstallMethodSelector.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.obsInstallMethodSelector.FocusedColor = System.Drawing.Color.Empty;
-            this.obsInstallMethodSelector.FocusedState.Parent = this.obsInstallMethodSelector;
             this.obsInstallMethodSelector.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.obsInstallMethodSelector.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.obsInstallMethodSelector.HoverState.Parent = this.obsInstallMethodSelector;
             this.obsInstallMethodSelector.ItemHeight = 30;
             this.obsInstallMethodSelector.Items.AddRange(new object[] {
             "Windows",
             "Steam",
             "Custom"});
-            this.obsInstallMethodSelector.ItemsAppearance.Parent = this.obsInstallMethodSelector;
             this.obsInstallMethodSelector.Location = new System.Drawing.Point(213, 192);
             this.obsInstallMethodSelector.Name = "obsInstallMethodSelector";
-            this.obsInstallMethodSelector.ShadowDecoration.Parent = this.obsInstallMethodSelector;
             this.obsInstallMethodSelector.Size = new System.Drawing.Size(140, 36);
             this.obsInstallMethodSelector.TabIndex = 98;
             this.obsInstallMethodSelector.SelectionChangeCommitted += new System.EventHandler(this.obsInstallMethodSelector_SelectionChangeCommitted);
@@ -752,7 +699,6 @@ namespace win_capture_audio_installer
         public System.Windows.Forms.Label versions;
         public System.Windows.Forms.TabPage settingsPage;
         private Guna.UI2.WinForms.Guna2VScrollBar faqScrollBar;
-        private System.Windows.Forms.Timer scrollTimer;
         private System.Windows.Forms.Label appTitle;
         private Guna.UI2.WinForms.Guna2Button helpVideoButton;
         public Guna.UI2.WinForms.Guna2Button installButton;
@@ -761,5 +707,6 @@ namespace win_capture_audio_installer
         public System.Windows.Forms.Label installerBuildLabel;
         public System.Windows.Forms.Label obsInstallMethodLabel;
         public Guna.UI2.WinForms.Guna2ComboBox obsInstallMethodSelector;
+        private System.Windows.Forms.Timer scrollTimer;
     }
 }

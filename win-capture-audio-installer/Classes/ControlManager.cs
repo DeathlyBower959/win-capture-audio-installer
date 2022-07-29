@@ -21,7 +21,7 @@ namespace win_capture_audio_installer.Classes
 
 
             bool isInstalled = CaptureAudio.IsInstalled();
-            MAIN.installButton.Text = isInstalled ? "Reinstall" : "Install";
+            /*MAIN.installButton.Text = isInstalled ? "Reinstall" : "Install";*/
             MAIN.uninstallButton.Visible = isInstalled;
 
         }

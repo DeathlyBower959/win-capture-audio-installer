@@ -23,7 +23,7 @@ namespace win_capture_audio_installer
         ConsoleAndFile
     }
 
-    public class Logger : LogBase
+    public class DebugLogger : LogBase
     {
         private string _dir; //Make public if want to be able to edit by using foo.Directory = "C:\foo\bar"
         private string _fileName; //Make public if want to be able to edit by using foo.FileName = "FileName.txt"
@@ -35,7 +35,7 @@ namespace win_capture_audio_installer
         private readonly string _initializedTime;
         private readonly string _fileType = ".log";
 
-        public Logger()
+        public DebugLogger()
         {
             _initializedTime = DateTime.Now.ToString("MMM-dd-yyyy (hh.mm.sstt)");
 
@@ -53,7 +53,7 @@ namespace win_capture_audio_installer
             Debug.WriteLine("-------------------\nLogger Initialized: {0}\n  State: {1}\n-------------------", this._fileName, "Disabled");
         }
 
-        public Logger(string Directory, string FileName)
+        public DebugLogger(string Directory, string FileName)
         {
             _initializedTime = DateTime.Now.ToString("MMM-dd-yyyy (hh.mm.sstt)");
 
@@ -72,7 +72,7 @@ namespace win_capture_audio_installer
             Debug.WriteLine("-------------------\nLogger Initialized: {0}\n  State: {1}\n-------------------", this._fileName, "Disabled");
         }
 
-        public Logger(string Directory, string FileName, bool Enabled)
+        public DebugLogger(string Directory, string FileName, bool Enabled)
         {
             _initializedTime = DateTime.Now.ToString("MMM-dd-yyyy (hh.mm.sstt)");
 
@@ -95,7 +95,7 @@ namespace win_capture_audio_installer
             }
         }
 
-        public Logger(string Directory, string FileName, bool Enabled, LogLevel ExceptionLevel, LogLevel MessageLevel, LogLocation ExceptionLocation, LogLocation MessageLocation)
+        public DebugLogger(string Directory, string FileName, bool Enabled, LogLevel ExceptionLevel, LogLevel MessageLevel, LogLocation ExceptionLocation, LogLocation MessageLocation)
         {
             _initializedTime = DateTime.Now.ToString("MMM-dd-yyyy (hh.mm.sstt)");
 

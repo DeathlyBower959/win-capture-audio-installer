@@ -1,2 +1,1 @@
-﻿OBS:27.1.3
-Windows:19041
+﻿Windows:19041

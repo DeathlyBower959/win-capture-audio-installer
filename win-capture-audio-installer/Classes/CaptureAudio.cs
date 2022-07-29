@@ -147,7 +147,7 @@ namespace win_capture_audio_installer.Classes
 
         public static bool IsLatestVersion()
         {
-            string latestVersion = MAIN.versionsList[MAIN.versionsList.Count - 1].tag;
+            string latestVersion = MAIN.versionsList[MAIN.versionsList.Count - 1].Tag;
 
             string currentVersion = InstalledVersion();
 
@@ -192,9 +192,9 @@ namespace win_capture_audio_installer.Classes
                     }
                 }
 
-                PluginVersion latestVersion = (versionTag != null || versionTag.Trim() == string.Empty) ? MAIN.versionsList.Find(x => x.tag == versionTag) : MAIN.versionsList[MAIN.versionsList.Count - 1];
+                PluginVersion versionToInstall = (versionTag != null || versionTag.Trim() == string.Empty) ? MAIN.versionsList.Find(x => x.Tag == versionTag) : MAIN.versionsList[MAIN.versionsList.Count - 1];
 
-                if (latestVersion.tag == null || latestVersion.downloadURL == null)
+                if (versionToInstall.Tag == null || versionToInstall.DownloadURL == null)
                 {
                     MAIN.dLogger.Log($"Plugin version {versionTag} was not found!", LogLevel.Error);
                     /*Notify.Toast("Plugin Version", "Failed to find that version!");*/
@@ -218,29 +218,28 @@ namespace win_capture_audio_installer.Classes
 
                 await Uninstall();
 
-                MAIN.UpdateStatus($"Downloading version: {latestVersion.tag}...");
+                MAIN.UpdateStatus($"Downloading version: {versionToInstall.Tag}...");
                 await DownloadManager.DownloadAsync(
-               latestVersion.downloadURL,
+               versionToInstall.DownloadURL,
                @"C:\temp\win-capture-audio-installer\Data",
                "plugin.zip");
 
                 if (!File.Exists(file))
                 {
                     MAIN.ClearStatus();
-                    MAIN.dLogger.Log("Version Not Found: " + latestVersion.tag, LogLevel.Error);
+                    MAIN.dLogger.Log("Version Not Found: " + versionToInstall.Tag, LogLevel.Error);
                     MAIN.UpdateStatus("The version was not found! Maybe check your internet?");
                     /*Notify.Toast("Failed to install version: " + latestVersion.tag, "The file was not found! Maybe check your internet?");*/
                     return;
                 }
 
-                MAIN.UpdateStatus($"Installing version: {latestVersion.tag}!");
+                MAIN.UpdateStatus($"Installing version: {versionToInstall.Tag}!");
                 ZipFile.ExtractToDirectory(file, obsLoc);
 
-                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\{{ARCHBIT}}\win-capture-audio-version.txt".FormatArch()), latestVersion.tag);
-                MAIN.UpdateStatus($"Installed version: {latestVersion.tag}!");
+                File.WriteAllText(Path.Combine(obsLoc, @"obs-plugins\{{ARCHBIT}}\win-capture-audio-version.txt".FormatArch()), versionToInstall.Tag);
+                MAIN.UpdateStatus($"Installed version: {versionToInstall.Tag}!");
 
-                Notify.Toast("Installed!", $"Version {latestVersion.tag} was successfully installed!", 2);
-
+                Notify.Toast("Installed!", $"Version {versionToInstall.Tag} was successfully installed!", 2);
 
                 if (File.Exists(file))
                     File.Delete(file);

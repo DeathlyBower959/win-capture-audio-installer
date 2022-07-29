@@ -24,11 +24,10 @@ namespace win_capture_audio_installer
         private const int EM_GETSCROLLPOS = 1245;
         private const int EM_SETSCROLLPOS = 1246;
 
-        public Logger dLogger = new Logger(@"C:\temp\win-capture-audio-installer\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
+        public DebugLogger dLogger = new DebugLogger(@"C:\temp\win-capture-audio-installer\Logs", "Default", true, LogLevel.Error, LogLevel.Information, LogLocation.ConsoleAndFile, LogLocation.ConsoleAndFile);
         public static MainWindow INSTANCE;
         public bool internet;
 
-        public Version minOBSVersion = new Version(27, 1, 3);
         public int minWINVersion = 19041;
 
         public MainWindow()
@@ -43,6 +42,8 @@ namespace win_capture_audio_installer
 
             if (!Environment.Is64BitOperatingSystem)
                 Notify.Toast("Windows Architecture", "It seems that you are running x32, but this plugin does not support that architecture!");
+
+
         }
 
         public List<PluginVersion> versionsList = new List<PluginVersion>();
@@ -54,24 +55,32 @@ namespace win_capture_audio_installer
                 UpdateStatus("Getting latest plugin versions...", false);
                 List<GithubRelease.Root> latestVersions = Web.GetReleases();
 
+#if DEBUG
+                DirectoryInfo fileLocation = Directory.GetParent(Directory.GetCurrentDirectory());
+                string resourcesPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), fileLocation.Name == "bin" ? @"..\..\Resources" : @"..\..\..\Resources"));
+
+
+                File.Copy(Path.Combine(resourcesPath, "FAQ.rtf"), @"C:\temp\win-capture-audio-installer\Data\FAQ.rtf", true);
+                File.Copy(Path.Combine(resourcesPath, "required.txt"), @"C:\temp\win-capture-audio-installer\Data\required.txt", true);
+#else
                 await DownloadManager.DownloadAsync(
-               "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/FAQ.rtf",
-               @"C:\temp\win-capture-audio-installer\Data",
-               "FAQ.rtf");
+                "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/FAQ.rtf",
+                @"C:\temp\win-capture-audio-installer\Data",
+                "FAQ.rtf");
 
                 await DownloadManager.DownloadAsync(
                 "https://raw.githubusercontent.com/DeathlyBower959/win-capture-audio-installer/master/win-capture-audio-installer/Resources/required.txt",
                 @"C:\temp\win-capture-audio-installer\Data",
                 "required.txt");
+#endif
 
 
 
                 if (File.Exists(@"C:\temp\win-capture-audio-installer\Data\required.txt"))
                 {
                     string[] data = File.ReadAllLines(@"C:\temp\win-capture-audio-installer\Data\required.txt");
-                    minOBSVersion = new Version(data[0].Split(':')[1]);
-                    minWINVersion = int.Parse(data[1].Split(':')[1]);
-                    dLogger.Log($"Retrieved required versions for windows and OBS | OBS: {minOBSVersion} | Win: {minWINVersion}", LogLevel.Success);
+                    minWINVersion = int.Parse(data[0].Split(':')[1]);
+                    dLogger.Log($"Retrieved required versions for windows | Win: {minWINVersion}", LogLevel.Success);
                 }
 
                 if (latestVersions == null)
@@ -93,6 +102,8 @@ namespace win_capture_audio_installer
 
                 List<string> failedToAdd = new List<string>();
 
+                Version latestMinOBSVersion = new Version();
+
                 try
                 {
                     foreach (GithubRelease.Root release in latestVersions)
@@ -103,14 +114,25 @@ namespace win_capture_audio_installer
                             {
                                 if (asset.Name != null && asset.BrowserDownloadUrl != null)
                                 {
-                                    if (asset.Name.Contains("win-capture-audio") && asset.Name.EndsWith(".zip") || asset.Name.EndsWith(".zip"))
+                                    if (asset.Name.Contains("win-capture-audio") && asset.Name.EndsWith(".zip"))
                                     {
                                         try
                                         {
-                                            versionsList.Add(new PluginVersion() { downloadURL = asset.BrowserDownloadUrl, tag = release.TagName });
+
+                                            int startIndex = release.Body.IndexOf("For OBS versions ") + "For OBS versions ".Length;
+                                            int length = release.Body.IndexOf(" and newer") - startIndex;
+                                            string parsedMinVersion = release.Body.Substring(startIndex, length);
+
+                                            Version minObsVersion;
+                                            Version.TryParse(" ", out minObsVersion);
+
+                                            if (minObsVersion != null) latestMinOBSVersion = minObsVersion;
+
+                                            versionsList.Add(new PluginVersion(asset.BrowserDownloadUrl, release.TagName, latestMinOBSVersion));
                                             versionSelector.Invoke(new Action(() =>
                                             {
                                                 if (versionSelector.Items.Contains("Loading...")) versionSelector.Items.Remove("Loading...");
+
                                                 versionSelector.Items.Add(release.TagName);
                                             }));
                                         }
@@ -133,7 +155,7 @@ namespace win_capture_audio_installer
                     if (failedToAdd.Count > 0)
                         UpdateStatus("Failed to add: " + String.Join(", ", failedToAdd));
                     else
-                        UpdateStatus("Finished retriving plugin versions...");
+                        UpdateStatus("Finished retrieving plugin versions...");
                 }
 
                 catch (Exception e)
@@ -147,7 +169,6 @@ namespace win_capture_audio_installer
 
             });
         }
-
 
         private void internetCheckTimer_Tick(object sender, EventArgs e)
         {
@@ -178,9 +199,9 @@ namespace win_capture_audio_installer
             FieldInfo[] fis = typeof(MainWindow).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
             foreach (FieldInfo fieldInfo in fis)
             {
-                if (fieldInfo.FieldType == typeof(Logger))
+                if (fieldInfo.FieldType == typeof(DebugLogger))
                 {
-                    var logger = fieldInfo.GetValue(this) as Logger;
+                    var logger = fieldInfo.GetValue(this) as DebugLogger;
                     logger.Disable();
                 }
             }
@@ -372,7 +393,17 @@ namespace win_capture_audio_installer
 
         private void versionSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (versionSelector.GetItemText(versionSelector.SelectedItem) == "Loading...") versionSelector.SelectedIndex = -1;
+            if (versionSelector.GetItemText(versionSelector.SelectedItem) == "Loading...")
+            {
+                versionSelector.SelectedIndex = -1;
+                return;
+            }
+
+            int installedIndex = versionSelector.Items.IndexOf(CaptureAudio.InstalledVersion());
+
+            if (versionSelector.SelectedIndex < installedIndex) installButton.Text = "Update";
+            else if (versionSelector.SelectedIndex == installedIndex) installButton.Text = "Reinstall";
+            else if (versionSelector.SelectedIndex > installedIndex) installButton.Text = "Downgrade ";
         }
 
         private void faqScrollBar_Scroll(object sender, ScrollEventArgs e)

@@ -27,10 +27,12 @@ namespace win_capture_audio_installer.Information
                 return false;
             }
 
-            if (obsVersion < MAIN.minOBSVersion)
+            Version minObsVersion = MAIN.versionsList[MAIN.versionSelector.SelectedIndex].MinOBSVersion;
+
+            if (obsVersion < minObsVersion)
             {
                 MAIN.dLogger.Log("OBS Version unsupported, please update!", LogLevel.Error);
-                Notify.Toast("OBS Version", $"Your version of OBS is not supported. You currently have version {obsVersion}. Please update to higher than version {MAIN.minOBSVersion}!");
+                Notify.Toast("OBS Version", $"This plugin version doesn't support your OBS version. You currently have version {obsVersion}. Please update to version higher than {minObsVersion}!");
                 return false;
             }
 
